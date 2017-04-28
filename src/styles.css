@@ -1,1 +1,88 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+* {
+  margin: 0;
+  padding: 0;
+}
+html{
+  height: 100%;
+}
+body{
+  /*background-color: #E0E0E0;*/
+  background-color: #EEEEEE;
+  height: 100%;
+}
+
+[layout="row"]{
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+}
+
+[layout-align="center-start"]{
+  -webkit-box-align: start;
+  -webkit-box-pack: center;
+  align-items: flex-start;
+  justify-content: center;
+  align-content: flex-start;
+}
+
+[layout-wrap] {
+    flex-wrap: wrap;
+    -webkit-animation: slideContent .3s cubic-bezier(0.0,0.0,0.2,1);
+    animation: slideContent .3s cubic-bezier(0.0,0.0,0.2,1);
+}
+
+[layout="column"] {
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+}
+
+[app-align-content] {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+[card-spacing] {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+[card-column-1] {
+  width: 100%;
+  max-width: 1060px;
+}
+[card-column-2] {
+  width: 100%;
+  max-width: 530px;
+}
+[card-column-3] {
+  width: 100%;
+  max-width: 353px;
+}
+[card-column-4] {
+  width: 100%;
+  max-width: 265px;
+}
+
+[font="roboto"] {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+[cursor="pointer"] {
+  cursor: pointer;
+}
+[text="primary"]{
+  opacity: 0.87;
+}
+[text="dividers"]{
+  opacity: 0.12;
+}
+[text="secondary"]{
+  opacity: 0.54;
+}
