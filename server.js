@@ -7,6 +7,9 @@ var app = express();
 var proxy = require('express-http-proxy');
 var url = require('url');
 
+// Get the config module
+var config = require('./config');
+
 const server = http.createServer(app);
 
 /**************************************************
@@ -41,6 +44,11 @@ app.use(express.static(__dirname + '/dist'));
 app.get('/test/', function(req, res){
   res.send("angular-test/test/");
 });
+
+// ./routes/index.js is the default code to be hit
+var appRoutes = require('./routes');
+app.use(appRoutes);
+
 
 /****************************
 * Define APIs to forward to *

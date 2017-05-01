@@ -9,11 +9,7 @@ var bodyParser = require('body-parser');
 var config = require('../config');
 
 // Require all app routes
-var dropboxRoutes = require('./dropbox.routes');
-var dropboxHealthRoutes = require('./dropbox.health.routes');
-var dropboxHeartbeatRoutes = require('./dropbox.heartbeat.routes');
-var dropboxRegistryRoutes = require('./dropbox.registry.routes');
-var dropboxPickupRoutes = require('./dropbox.pickup.routes');
+var dropboxRoutes = require('./.routes');
 
 // Get an instance of an express router
 var routes = express.Router();
@@ -23,18 +19,14 @@ routes.use(bodyParser.urlencoded({ extended: true }));
 routes.use(bodyParser.json());
 
 // Use all app routes at the base path
-routes.use('/',
+routes.use('/api',
   [
     dropboxRoutes,
-    dropboxHealthRoutes,
-    dropboxHeartbeatRoutes,
-    dropboxPickupRoutes,
-    dropboxRegistryRoutes
   ]
 );
 
 // Define a default health path at /
-routes.get('/', (req, res) => {
+routes.get('/health', (req, res) => {
   try {
     console.log('nodejs-dropbox-store running on ' + process.env.APP_POD_NAME);
     // Return a 200 'OK'
