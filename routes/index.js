@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var config = require('../config');
 
 // Require all app routes
-var dropboxRoutes = require('./.routes');
+var utilizationRoutes = require('./utlization.routes');
 
 // Get an instance of an express router
 var routes = express.Router();
@@ -18,22 +18,50 @@ var routes = express.Router();
 routes.use(bodyParser.urlencoded({ extended: true }));
 routes.use(bodyParser.json());
 
+// ** BOILERPLATE FOR API PROXYING **
+// const WHATEVER_BASE_URL = 'https://whatever';
+//
+// /**
+//  * Setup the request forwarding for the proxy api
+//  */
+// var apiProxy = proxy(WHATEVER_BASE_URL, {
+//   forwardPath: function(req, res) {
+//     var baseUrl = req.originalUrl.replace('/api/whatever/', '/');
+//     return url.parse(baseUrl).path;
+//   }
+// });
+//
+//
+//
+// routes.use('/api-proxy',
+//   [
+//     apiProxy
+//   ]
+// );
+
 // Use all app routes at the base path
 routes.use('/api',
   [
-    dropboxRoutes,
+    utilizationRoutes,
   ]
 );
 
 // Define a default health path at /
 routes.get('/health', (req, res) => {
   try {
-    console.log('nodejs-dropbox-store running on ' + process.env.APP_POD_NAME);
+    console.log('yog running on ' + process.env.APP_POD_NAME);
     // Return a 200 'OK'
-    res.status(200).send(`nodejs-dropbox-store running on ${process.env.APP_POD_NAME}`);
+    res.status(200).send(`yog running on ${process.env.APP_POD_NAME}`);
   } catch (err) {
     console.log(`Something went wrong while responding to readiness check at /: ${err}`);
   }
+});
+
+/**
+* Redirect pages used by the frontend to index.html for everything else
+*/
+routes.get('*', function(req, res) {
+  res.sendFile(__dirname + "/dist/index.html");
 });
 
 // Export the routes as an unnamed object

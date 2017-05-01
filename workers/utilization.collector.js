@@ -16,7 +16,7 @@ var Utlization = mongoose.model('utilization', UtilizationSchema);
 var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
 
 // Declare an empty interval object
-var intervals = null
+var intervals = null;
 
 // Handle messages from parent process
 process.on('message', (msg) => {
@@ -27,6 +27,11 @@ process.on('message', (msg) => {
     startCollecting();
     console.log(`[${process.pid}]: Collection started.`);
   }
+});
+
+process.on('exit', () => {
+  stopCollecting();
+  console.log(`[${process.pid}]: Collection stopped! Process exiting...`);
 });
 
 /**
@@ -51,12 +56,12 @@ function startCollecting() {
           collect utilizations: \n${err}`);
       }
     });
-  });
+  }, config.kubePollingDT);
 }
 
 /**
  * Uses the Kubernetes API to collect and store namespace utilizations
  */
 function collectUtilizations(callback) {
-  
+  console.log(`[${process.pid}]: collectUtilizations called!`);
 }

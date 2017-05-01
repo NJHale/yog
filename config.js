@@ -52,10 +52,16 @@ config.db.once('open', () => {
   console.log(`Mongoose connected to mongodb @ ${config.mongoUri}`);
 });
 
-// Set reductionDT
-config.reductionDT = process.env.REDUCTION_DT || 2500;
+// Set kubernetes API URL
+config.kubeAPIURL = process.env.KUBE_API_URL || 'kube-default';
 // Set kubernetes API polling dt
 config.kubePollingDT = process.env.KUBE_POLLING_DT || 2500;
+
+// Set reductionDT
+config.reductionDT = process.env.REDUCTION_DT || 2500;
+
+
+
 
 // Export the config object as an unnamed object
 module.exports = config;
