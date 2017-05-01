@@ -293,7 +293,9 @@
                     "description": "Defines how to deploy the database"
                 },
                 "labels": {
-                    "name": "${MICROSERVICE_NAME}-db"
+                    "name": "${MICROSERVICE_NAME}-db",
+                    "microservice": "${MICROSERVICE_NAME}",
+                    "application": "${APPLICATION_NAME}"
                 }
             },
             "spec": {
@@ -310,7 +312,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "${MONGO_IMAGE_STREAM_NAMESPACE}",
-                                "name": "mongodb:3.2"
+                                "name": "mongodb:latest"
                             }
                         }
                     },
