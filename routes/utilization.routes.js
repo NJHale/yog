@@ -43,3 +43,6 @@ routes.get('/utilizations', (req, res) => {
     res.status(500).json(JSON.stringify(ex));
   }
 });
+
+// Export the express router as an unnamed object
+module.exports = routes;
