@@ -6,18 +6,23 @@ import { MaterialModule } from '@angular/material';
 
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
+import { routing } from './app.routing';
+
 import { AppComponent } from './components/app.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    routing
   ],
   providers: [],
   bootstrap: [AppComponent]
