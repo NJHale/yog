@@ -46,7 +46,7 @@ app.use(appRoutes);
 **************************/
 
 // Fork and start the child process
-var fork = cp.fork('./worker/utilization.collector.js').on('message', (msg) => {
+var fork = cp.fork('./workers/utilization.collector').on('message', (msg) => {
   console.log(`Message from child process received: ${msg}`);
 });
 

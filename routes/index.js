@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var config = require('../config');
 
 // Require all app routes
-var utilizationRoutes = require('./utlization.routes');
+var utilizationRoutes = require('./utilization.routes');
 
 // Get an instance of an express router
 var routes = express.Router();
