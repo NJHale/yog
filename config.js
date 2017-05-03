@@ -15,8 +15,8 @@ config.mongoUri = `yog-db:27017`;
 config.mongoDatabase = process.env.MONGODB_DATABASE || 'yogdb';
 // Collect passwords
 // Set default mqtt user and pass
-config.mongoUser = process.env.MONGO_USER || 'yog';
-config.mongoPass = process.env.MONGO_PASS || 'yog';
+config.mongoUser = process.env.MONGO_USER || 'nodejs';
+config.mongoPass = process.env.MONGO_PASS || 'nodejs';
 
 // Get relevant secrets from the secrets volume if it exists
 try {
