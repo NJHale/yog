@@ -8,11 +8,11 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$ups-app-primary: mat-palette($mat-deep-orange, A700);
-$ups-app-accent:  mat-palette($mat-amber, 500, A100, A400);
+$ups-app-primary: mat-palette($mat-blue-grey, 900);
+$ups-app-accent:  mat-palette($mat-light-blue, 400, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$ups-app-warn:    mat-palette($mat-red);
+$ups-app-warn:    mat-palette($mat-red, 800);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $ups-app-theme: mat-light-theme($ups-app-primary, $ups-app-accent, $ups-app-warn);
