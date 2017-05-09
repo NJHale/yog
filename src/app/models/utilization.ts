@@ -1,8 +1,11 @@
 export class Utilization {
   namespace: string;
+  quotaName: string;
+  cpuLimit: string;
   cpuUsed: string;
-  cpuQuota: string;
+  memLimit: string;
   memUsed: string;
-  memQuota: string;
-  time: number;
+  podsLimit: number;
+  podsUsed: number;
+  date: any;
 }
