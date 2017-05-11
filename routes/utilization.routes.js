@@ -25,7 +25,7 @@ var routes = express.Router();
 routes.get('/utilizations', (req, res) => {
   try {
     // Get the number of elements to retrieve - null should be 0 to get all
-    var num = req.query.num == null ? 0 : req.query.num;
+    var num = req.query.num === null ? 0 : req.query.num;
     // Perform a find all with mongoose
     Utilization.find((err, utils) => {
       // Check for an error case

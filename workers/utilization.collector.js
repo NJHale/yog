@@ -39,7 +39,7 @@ process.on('exit', () => {
  * Stops the collection of utilizations by clearing the interval
  */
 function stopCollecting() {
-  if (interval != null) {
+  if (interval !== null) {
     clearInterval(interval);
     interval = null;
   }
@@ -52,7 +52,7 @@ function stopCollecting() {
 function startCollecting() {
   interval = setInterval(() => {
     collectUtilizations((err) => {
-      if (err != null) {
+      if (err !== null) {
         console.log(`[${process.pid}]: Some error occured while attempting to
           collect utilizations: \n${err}`);
       }
