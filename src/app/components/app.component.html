@@ -1,4 +1,6 @@
-<md-toolbar *ngIf="!isNarrow" color="primary">
+
+<!-- Toolbar above sidenav layout when screen is wide -->
+<md-toolbar *ngIf="!isNarrow" class="tool-time" color="primary">
   <button md-icon-button (click)="sidenav.toggle()">
     <md-icon class = "app-toolbar-menu">menu</md-icon>
   </button>
@@ -6,6 +8,49 @@
   <span>Yog-Sothoth</span>
 </md-toolbar>
 
-<router-outlet></router-outlet>
+<!-- Container for sidenav -->
+<md-sidenav-container>
+  <!-- Toolbar inside sidenav when screen is narrow -->
+  <md-toolbar *ngIf="isNarrow" class="tool-time" color="primary">
+    <button md-icon-button (click)="sidenav.toggle()">
+      <md-icon class = "app-toolbar-menu">menu</md-icon>
+    </button>
+    <img style="height:100%;" src="/assets/logo.svg" />
+    <span>Yog-Sothoth</span>
+  </md-toolbar>
 
-<div style="height:20px;"></div>
+  <!-- Sidenav with conditional transparency -->
+  <md-sidenav #sidenav [attr.tra]="!isNarrow ? true : null">
+    <div *ngIf="isNarrow" cursor = "pointer" class = "sidenavLbl"
+    (click)="sidenav.close();">
+      <div font = "roboto" class = "navbarNm">
+        <h2 text = "secondary" font="roboto">quickstart</h2>
+      </div>
+      <div class = "navbarAr">
+        <i text = "secondary" class="material-icons">
+          <h2>keyboard_arrow_left</h2>
+        </i>
+      </div>
+    </div>
+    <md-nav-list text = "secondary">
+      <md-list-item (click) = "sidenav.close(); goHome()">
+        <md-icon class = "navIcon" md-list-avatar>home</md-icon>
+        <span font = "roboto">HOME</span>
+      </md-list-item>
+      <md-list-item (click) = "sidenav.close(); goToPage2()">
+        <md-icon class = "navIcon" md-list-avatar>markunread_mailbox</md-icon>
+        <span font = "roboto">PAGE2</span>
+      </md-list-item>
+      <md-list-item (click) = "sidenav.close(); goToPage3()">
+        <md-icon class = "navIcon" md-list-avatar>mail</md-icon>
+        <span font = "roboto">PAGE3</span>
+      </md-list-item>
+    </md-nav-list>
+  </md-sidenav>
+
+  <!-- gotta have routing -->
+  <router-outlet></router-outlet>
+
+  <!-- some spave at the bottom would look nice -->
+  <div style="height:20px;"></div>
+</md-sidenav-container>
