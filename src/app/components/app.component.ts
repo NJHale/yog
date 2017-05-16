@@ -1,12 +1,21 @@
 import { Component, ViewChild, HostListener } from '@angular/core';
 import { MdSidenav } from '@angular/material';
 
+import { UtilizationService } from '../services/utilization.service'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  private namespaces: string[];
+
+  constructor(
+    private utilizationService: UtilizationService
+  ) { }
+
   /**
    * Get the md-sidenav from the html to perform actions on it
    * @param  {MdSidenav} 'sidenav' The sidenav html element from template
@@ -44,6 +53,10 @@ export class AppComponent {
    * determine page layout onInit
    */
   ngOnInit(): void {
+    this.utilizationService.getNamespaces().then(response => {
+      this.namespaces = response;
+      console.log(this.namespaces);
+    });
     this.updateSidenav();
   }
 

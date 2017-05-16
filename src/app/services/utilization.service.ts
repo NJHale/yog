@@ -16,6 +16,13 @@ export class UtilizationService {
                .catch(this.handleError);
   }
 
+  getNamespaces(): Promise<string[]> {
+    return this.http.get('/api/namespaces')
+               .toPromise()
+               .then(response => response.json().namespaces as string[])
+               .catch(this.handleError);
+  }
+
   /**
   * Handle any errors that may occur.
   */
