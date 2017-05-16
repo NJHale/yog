@@ -13,6 +13,8 @@ var config = require('./config');
 
 var server = http.createServer(app);
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 /**************************************************
 * REGISTER PORT 8080 FOR APPLICATION TO LISTEN ON *
 **************************************************/
