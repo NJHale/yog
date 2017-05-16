@@ -21,7 +21,7 @@ import { HomeComponent } from './components/home/home.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
     ChartsModule,
     routing
   ],
