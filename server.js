@@ -43,6 +43,14 @@ app.use(express.static(__dirname + '/dist'));
 var appRoutes = require('./routes');
 app.use(appRoutes);
 
+/**
+* Redirect pages used by the frontend to index.html for everything else
+*/
+app.get('*', function(req, res) {
+  res.sendFile(__dirname + "/dist/index.html");
+});
+
+
 /**************************
 * DATA COLLECTION DAEMONS *
 **************************/

@@ -59,12 +59,5 @@ routes.get('/health', (req, res) => {
   }
 });
 
-/**
-* Redirect pages used by the frontend to index.html for everything else
-*/
-routes.get('*', function(req, res) {
-  res.sendFile(__dirname + "/dist/index.html");
-});
-
 // Export the routes as an unnamed object
 module.exports = routes;
