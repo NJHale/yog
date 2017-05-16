@@ -15,10 +15,11 @@ routes.get('/namespaces', (req, res) => {
     console.log(`resp: ${JSON.stringify(resp)}`);
     console.log(`body: ${body}`);
 
+    var namespaces = JSON.parse(body).items;
     var names = [];
 
-    for(var i = 0; i < body.items.length; i++) {
-      names.push(body.items[i].name);
+    for(var i = 0; i < namespaces.length; i++) {
+      names.push(body.items[i].metadata.name);
     }
 
     var response = {
