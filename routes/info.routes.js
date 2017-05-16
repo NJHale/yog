@@ -19,7 +19,7 @@ routes.get('/namespaces', (req, res) => {
     var names = [];
 
     for(var i = 0; i < namespaces.length; i++) {
-      names.push(body.items[i].metadata.name);
+      names.push(namespaces[i].metadata.name);
     }
 
     var response = {
