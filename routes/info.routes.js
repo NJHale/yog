@@ -5,8 +5,8 @@ var routes = express.Router();
 var request = require('request');
 var config = require('../config');
 
-routes.get('/projects', (req, res) => {
-  request.get(config.kubeAPIURL + '/oapi/v1/projects', {
+routes.get('/namespaces', (req, res) => {
+  request.get(config.kubeAPIURL + '/api/v1/namespaces', {
     'auth': {
       'bearer': config.kubeAuthToken
     }
@@ -14,7 +14,18 @@ routes.get('/projects', (req, res) => {
     console.log(`error: ${err}`);
     console.log(`resp: ${JSON.stringify(resp)}`);
     console.log(`body: ${body}`);
-    res.send(body);
+
+    var names = [];
+
+    for(var i = 0; i < body.items.length; i++) {
+      names.push(body.items[i].name);
+    }
+
+    var response = {
+      "namespaces": names
+    };
+
+    res.send(JSON.stringify(response));
   });
 });
 
