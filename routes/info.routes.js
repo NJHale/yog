@@ -5,8 +5,8 @@ var routes = express.Router();
 var request = require('request');
 var config = require('../config');
 
-routes.get('/namespaces', (req, res) => {
-  request.get(config.kubeAPIURL + '/api/v1/namespaces', {
+routes.get('/projects', (req, res) => {
+  request.get(config.kubeAPIURL + '/oapi/v1/projects', {
     'auth': {
       'bearer': config.kubeAuthToken
     }
