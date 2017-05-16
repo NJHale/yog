@@ -19,7 +19,7 @@ export class UtilizationService {
   getNamespaces(): Promise<any> {
     return this.http.get('/api/namespaces')
                .toPromise()
-               .then(response => response.json().namespaces)
+               .then(response => response.json())
                .catch(this.handleError);
   }
 
