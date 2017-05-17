@@ -37,14 +37,18 @@
         <md-icon class = "navIcon" md-list-avatar>home</md-icon>
         <span font = "roboto">HOME</span>
       </md-list-item>
-      <md-list-item (click) = "sidenav.close(); goToPage2()">
+      <md-list-item *ngFor="let namespace of namespaces">
+        <md-icon class = "navIcon" md-list-avatar>label</md-icon>
+        <span font = "roboto">{namespace}</span>
+      </md-list-item>
+      <!-- <md-list-item (click) = "sidenav.close(); goToPage2()">
         <md-icon class = "navIcon" md-list-avatar>markunread_mailbox</md-icon>
         <span font = "roboto">PAGE2</span>
       </md-list-item>
       <md-list-item (click) = "sidenav.close(); goToPage3()">
         <md-icon class = "navIcon" md-list-avatar>mail</md-icon>
         <span font = "roboto">PAGE3</span>
-      </md-list-item>
+      </md-list-item> -->
     </md-nav-list>
   </md-sidenav>
 
