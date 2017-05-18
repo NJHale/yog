@@ -110,7 +110,7 @@ function collectUtilizations(callback) {
     var utils = getUtilizations(JSON.parse(body));
     console.log(`utils: ${JSON.stringify(utils)}`);
 
-    Utilization.collections.insert(utils, (err, docs) => {
+    Utilization.collection.insert(utils, (err, docs) => {
       if (err) {
         console.log(`error: ${err}`);
       } else {
