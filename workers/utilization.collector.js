@@ -82,6 +82,7 @@ function getUtilizations(quotas) {
         podsUsed: quotas.items[i].status.used.pods
     });
     // Push the Utilization onto the stack
+    console.log(util);
     utils.push(util);
   }
 
