@@ -102,7 +102,7 @@ function collectUtilizations(callback) {
       'bearer': config.kubeAuthToken
     }
   },(err, resp, body) => {
-    console.log(`error: ${err}`);
+    if(err) console.log(`error: ${err}`);
     console.log(`resp: ${JSON.stringify(resp)}`);
     console.log(`body: ${body}`);
     //console.log(`elements of body: ${JSON.parse(JSON.stringify(body)).keys()}`);
