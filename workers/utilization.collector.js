@@ -71,18 +71,17 @@ function getUtilizations(quotas) {
   var utils = [];
   for (var i = 0; i < quotas.items.length; i++) {
     // Instantiate a new Utilization mongo model with the resource quota list data
-    var util = new Utilization({
+    var util = {
         namespace: quotas.items[i].metadata.namespace,
         quotaName: quotas.items[i].metadata.name,
-        cpuLimit: quotas.items[i].status.hard[0],
-        cpuUsed: quotas.items[i].status.used[0],
-        memLimit: quotas.items[i].status.hard[1],
-        memUsed: quotas.items[i].status.used[1],
+        cpuLimit: quotas.items[i].status.hard["limits.cpu"],
+        cpuUsed: quotas.items[i].status.used["limits.cpu"],
+        memLimit: quotas.items[i].status.hard["limits.memory"],
+        memUsed: quotas.items[i].status.used["limits.memory"],
         podsLimit: quotas.items[i].status.hard.pods,
         podsUsed: quotas.items[i].status.used.pods
-    });
+    };
     // Push the Utilization onto the stack
-    console.log(util);
     utils.push(util);
   }
 
@@ -104,18 +103,14 @@ function collectUtilizations(callback) {
     }
   },(err, resp, body) => {
     if(err) console.log(`error: ${err}`);
-    console.log(`resp: ${JSON.stringify(resp)}`);
-    console.log(`body: ${body}`);
-    //console.log(`elements of body: ${JSON.parse(JSON.stringify(body)).keys()}`);
 
     var utils = getUtilizations(JSON.parse(body));
-    console.log(`utils: ${JSON.stringify(utils)}`);
 
-    Utilization.collection.insert(utils, (err, docs) => {
+    Utilization.create(utils, (err, results) => {
       if (err) {
         console.log(`error: ${err}`);
       } else {
-        console.log(`${docs.length} utils were successfully stored`);
+        console.log(`results: ${results}`);
       }
     });
 

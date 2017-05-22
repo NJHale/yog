@@ -11,7 +11,7 @@ var config = require('../config');
 var UtilizationSchema = require('../schemas/utilization.schema');
 
 // Create the mongoose model and instance of all models
-var Utlization = mongoose.model('utilization', UtilizationSchema);
+var Utilization = mongoose.model('Utilization', UtilizationSchema);
 // Also create a mongoose model for the latest Utilizations
 var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
 
