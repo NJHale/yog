@@ -57,10 +57,10 @@ config.kubeAPIURL = process.env.KUBE_API_URL || 'kube-default';
 config.kubeAuthToken = process.env.KUBE_AUTH_TOKEN ||
   'nixuM-hsGBgbhrLGB9y2PQMlb9ElWfSBBuRpxe2ZGbU';
 // Set kubernetes API polling dt
-config.kubePollingDT = process.env.KUBE_POLLING_DT || 2500;
+config.kubePollingDT = process.env.KUBE_POLLING_DT || 25000;
 
 // Set reductionDT
-config.reductionDT = process.env.REDUCTION_DT || 2500;
+config.reductionDT = process.env.REDUCTION_DT || 25000;
 
 
 
