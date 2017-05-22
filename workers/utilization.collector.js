@@ -108,15 +108,6 @@ function collectUtilizations(callback) {
 
     console.log(`utils: ${utils}`);
 
-    var util = new Utilization(utils[0]);
-    util.save((err, result) => {
-      if(err) {
-        console.log(`error: ${err}`);
-      } else {
-        console.log(result);
-      }
-    });
-
     Utilization.create(utils, (err, results) => {
       if (err) {
         console.log(`error: ${err}`);
