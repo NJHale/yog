@@ -252,6 +252,14 @@
                                 {
                                     "name": "MONGODB_ADMIN_PASSWORD",
                                     "value": "${DATABASE_ADMIN_PASSWORD}"
+                                },
+                                {
+                                  "name": "KUBE_API_URL",
+                                  "value": "${KUBE_API_URL}"
+                                },
+                                {
+                                  "name": "KUBE_AUTH_TOKEN",
+                                  "value": "${KUBE_AUTH_TOKEN}"
                                 }
                             ]
                         }]
@@ -547,6 +555,17 @@
             "description": "Password for the database admin user.",
             "generate": "expression",
             "from": "[a-zA-Z0-9]{16}"
+        },
+        {
+            "name": "KUBE_API_URL",
+            "displayName": "Kubernetes API URL",
+            "required": true
+        },
+        {
+            "name": "KUBE_AUTH_TOKEN",
+            "displayName": "Kubernetes Auth Token",
+            "description": "Auth token of the service account to use",
+            "required": true
         }
     ],
     "labels": {
