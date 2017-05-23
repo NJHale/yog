@@ -45,7 +45,7 @@ routes.get('/utilizations', (req, res) => {
 });
 
 /**
- * utilization endpoint for getting all utilizations of a particular namespace
+ * Utilization endpoint for getting all utilizations of a particular namespace
  * @type {Boolean}
  */
 routes.get('/utilizations/:namespace', (req, res) => {
@@ -79,6 +79,30 @@ routes.get('/utilizations/:namespace', (req, res) => {
 });
 
 /**
+ * Utilization endpoint for getting the latest utilizations
+ * @type {Boolean}
+ */
+routes.get('/utilizations/latest', (req, res) => {
+  try {
+      // Perform a find on the namespace
+      LatestUtilization.find((err, utilizations) => {
+        // Check for an error case
+        if (err) {
+          console.log(`An error was detected while getting the latest utilizations: ${err}`);
+          // Return an error
+          res.status(400).json(err);
+        } else {
+          // Change status to 200 "OK" and utilization the json response
+          res.status(200).json(utilizations);
+        }
+      }).sort({ time: 'descending' });
+  } catch (err) {
+      // Set and send status 500 "Internal Server Error"
+      res.status(500).json(JSON.stringify(err));
+  }
+});
+
+/**
  * Package endpoint for getting the latest utilizations
  * @type {Boolean}
  */
@@ -102,18 +126,8 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
         }
       }).sort({ time: 'descending' });
     } else {
-      // Perform a find all
-      LatestUtilization.find((err, utilizations) => {
-        // Check for an error case
-        if (err) {
-          console.log(`An error was detected while getting the latest utilizations: ${err}`);
-          // Return an error
-          res.status(400).json(err);
-        } else {
-          // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
-        }
-      }).sort({ time: 'descending' });
+      // Set and send status 400 "Bad Request"
+      res.status(400).send('A namespace parameter must be provided.');
     }
 
   } catch (err) {
