@@ -126,11 +126,12 @@ function collectUtilizations(callback) {
                   console.log(`Util already exists, updating... util: ${JSON.stringify(util)}`);
                   LatestUtilization.update({ _id: utils[0]._id },
                     new LatestUtilization(latest));
-                  //util = new LatestUtilization(latest);
+                  utils = [new LatestUtilization(latest)];
                 } else {
                   console.log('Util doesn\'t exist, creating... ');
                   // No value found, create
                   utils = [new LatestUtilization(latest)];
+                  console.log(`util to be created: ${JSON.stringify(utils[0])}`);
                 }
                 utils[0].save((error) => {
                   if(error)
