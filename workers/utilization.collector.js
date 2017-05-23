@@ -103,7 +103,7 @@ function updateOrSaveUtil(latestUtil) {
         util = new LatestUtilization(latestUtil);
       }
       util.save((error) => {
-        if(error) console.log('Some error occurred while saving util');
+        if(error) console.log(`Some error occurred while saving util: ${error}`);
       });
     }
   };
