@@ -88,7 +88,7 @@ function getUtilizations(quotas) {
   return utils;
 }
 
-function updateOrSaveUtil(err, latestUtil) {
+function updateOrSaveUtil(latestUtil) {
 
   var updateOrSave = (err, util) => {
     if (err) {
@@ -133,9 +133,9 @@ function collectUtilizations(callback) {
         console.log(`error: ${err}`);
         callback(err);
       } else {
-        console.log(`storedUtils: ${storedUtils}`);
+        console.log(`storedUtils: ${latestUtils}`);
         for (var util of latestUtils) {
-
+          updateOrSaveUtil(util);
         }
       }
     });
