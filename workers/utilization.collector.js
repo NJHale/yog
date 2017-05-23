@@ -102,7 +102,9 @@ function updateOrSaveUtil(latestUtil) {
         // No value found, create
         util = new LatestUtilization(latestUtil);
       }
-      util.save();
+      util.save((error) => {
+        if(error) console.log('Some error occurred while saving util');
+      });
     }
   };
   console.log('LatestUtilization.find...');
