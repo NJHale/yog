@@ -18,31 +18,66 @@ var LatestUtilization = mongoose.model('LatestUtilization', UtilizationSchema);
 // Get an express router instance
 var routes = express.Router();
 
- /**
-  * Utlization endpoint for getting all dropboxes
-  * @type {[type]}
-  */
-routes.get('/utilizations', (req, res) => {
+
+/**
+ * Package endpoint for getting the latest utilizations
+ * @type {Boolean}
+ */
+routes.get('/utilizations/latest/:namespace', (req, res) => {
   try {
-    // Get the number of elements to retrieve - null should be 0 to get all
-    var num = req.query.num === null ? 0 : req.query.num;
-    // Perform a find all with mongoose
-    Utilization.find((err, utils) => {
-      // Check for an error case
-      if (err !== null) {
-        console.log(`An error was detected when retrieving utilizations: ${err}`);
-        // Respond with an error
-        res.status(400).json(err);
-      } else {
-        // Change status to 200 "OK" and utilization the json response
-        res.status(200).json(utils);
-      }
-    }).limit(Number(num));
-  } catch (ex) {
-    // Set and send status 500 "Internal Service Error"
-    res.status(500).json(JSON.stringify(ex));
+    // Get the namespace
+    var namespace = req.params.namespace;
+    console.log(`/latest/namespace: ${namespace}`);
+
+    if (namespace) {
+      // Perform a find on the namespace
+      LatestUtilization.find({ namespace: namespace }, (err, utilizations) => {
+        // Check for an error case
+        if (err) {
+          console.log(`An error was detected while getting the latest utilizations: ${err}`);
+          // Return an error
+          res.status(400).json(err);
+        } else {
+          // Change status to 200 "OK" and utilization the json response
+          res.status(200).json(utilizations);
+        }
+      }).sort({ time: 'descending' });
+    } else {
+      // Set and send status 400 "Bad Request"
+      res.status(400).send('A namespace parameter must be provided.');
+    }
+
+  } catch (err) {
+      // Set and send status 500 "Internal Server Error"
+      res.status(500).json(JSON.stringify(err));
   }
 });
+
+
+/**
+ * Utilization endpoint for getting the latest utilizations
+ * @type {Boolean}
+ */
+routes.get('/utilizations/latest', (req, res) => {
+  try {
+      // Perform a find on the namespace
+      LatestUtilization.find((err, utilizations) => {
+        // Check for an error case
+        if (err) {
+          console.log(`An error was detected while getting the latest utilizations: ${err}`);
+          // Return an error
+          res.status(400).json(err);
+        } else {
+          // Change status to 200 "OK" and utilization the json response
+          res.status(200).json(utilizations);
+        }
+      }).sort({ time: 'descending' });
+  } catch (err) {
+      // Set and send status 500 "Internal Server Error"
+      res.status(500).json(JSON.stringify(err));
+  }
+});
+
 
 /**
  * Utilization endpoint for getting all utilizations of a particular namespace
@@ -78,61 +113,30 @@ routes.get('/utilizations/:namespace', (req, res) => {
   }
 });
 
-/**
- * Utilization endpoint for getting the latest utilizations
- * @type {Boolean}
- */
-routes.get('/utilizations/latest', (req, res) => {
+
+ /**
+  * Utlization endpoint for getting all dropboxes
+  * @type {[type]}
+  */
+routes.get('/utilizations', (req, res) => {
   try {
-      // Perform a find on the namespace
-      LatestUtilization.find((err, utilizations) => {
-        // Check for an error case
-        if (err) {
-          console.log(`An error was detected while getting the latest utilizations: ${err}`);
-          // Return an error
-          res.status(400).json(err);
-        } else {
-          // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
-        }
-      }).sort({ time: 'descending' });
-  } catch (err) {
-      // Set and send status 500 "Internal Server Error"
-      res.status(500).json(JSON.stringify(err));
-  }
-});
-
-/**
- * Package endpoint for getting the latest utilizations
- * @type {Boolean}
- */
-routes.get('/utilizations/latest/:namespace', (req, res) => {
-  try {
-    // Get the namespace
-    var namespace = req.params.namespace;
-    console.log(`/latest/namespace: ${namespace}`);
-
-    if (namespace) {
-      // Perform a find on the namespace
-      LatestUtilization.find({ namespace: namespace }, (err, utilizations) => {
-        // Check for an error case
-        if (err) {
-          console.log(`An error was detected while getting the latest utilizations: ${err}`);
-          // Return an error
-          res.status(400).json(err);
-        } else {
-          // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
-        }
-      }).sort({ time: 'descending' });
-    } else {
-      // Set and send status 400 "Bad Request"
-      res.status(400).send('A namespace parameter must be provided.');
-    }
-
-  } catch (err) {
-      // Set and send status 500 "Internal Server Error"
-      res.status(500).json(JSON.stringify(err));
+    // Get the number of elements to retrieve - null should be 0 to get all
+    var num = req.query.num === null ? 0 : req.query.num;
+    // Perform a find all with mongoose
+    Utilization.find((err, utils) => {
+      // Check for an error case
+      if (err !== null) {
+        console.log(`An error was detected when retrieving utilizations: ${err}`);
+        // Respond with an error
+        res.status(400).json(err);
+      } else {
+        // Change status to 200 "OK" and utilization the json response
+        res.status(200).json(utils);
+      }
+    }).limit(Number(num));
+  } catch (ex) {
+    // Set and send status 500 "Internal Service Error"
+    res.status(500).json(JSON.stringify(ex));
   }
 });
 
