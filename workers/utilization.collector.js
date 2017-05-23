@@ -121,9 +121,9 @@ function collectUtilizations(callback) {
                 // Some error occurred
                 console.log(`Some error occurred while attempting to update or save util: ${err}`);
               } else {
-                if (util !== null) {
+                if (util) {
                   // We found a value, update!
-                  console.log('Util already exists, updating... ' + util);
+                  console.log(`Util already exists, updating... util: ${util}`);
                   LatestUtilization.update({ _id: util._id },
                     new LatestUtilization(latest));
                   //util = new LatestUtilization(latest);
