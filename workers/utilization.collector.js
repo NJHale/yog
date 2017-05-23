@@ -88,17 +88,27 @@ function getUtilizations(quotas) {
   return utils;
 }
 
-function updateOrSaveUtil(err, util) {
-  if (err) {
-    // Some error occurred
-    console.log('Some error occurred while attempting to update or save util.');
-  } else if (util) {
-    // We found a value, update!
-    LatestUtilization.update({ _id: u._id }, util);
-  } else {
-    // No value found, create
-    LatestUtilization.save(util);
-  }
+function updateOrSaveUtil(err, latestUtil) {
+
+  var updateOrSave = (err, util) => {
+    if (err) {
+      // Some error occurred
+      console.log('Some error occurred while attempting to update or save util.');
+    } else {
+      if (util) {
+        // We found a value, update!
+        LatestUtilization.update({ _id: util._id }, latestUtil);
+      } else {
+        // No value found, create
+        util = new LatestUtilization(latestUtil);
+      }
+      util.save();
+    }
+  };
+
+  LatestUtilization.find({ quotaName: latestUtil.quotaName, namespace: latestUtil.namespace },
+    updateOrSave(err, u)
+  );
 }
 
 /**
@@ -118,16 +128,14 @@ function collectUtilizations(callback) {
 
     console.log(`utils: ${utils}`);
 
-    Utilization.create(utils, (err, storedUtils) => {
+    Utilization.create(utils, (err, latestUtils) => {
       if (err) {
         console.log(`error: ${err}`);
         callback(err);
       } else {
         console.log(`storedUtils: ${storedUtils}`);
-        for (var util of storedUtils) {
-          LatestUtilization.find({ quotaName: util.quotaName, namespace: util.namespace },
-            updateOrSaveUtil(err, u)
-          );
+        for (var util of latestUtils) {
+
         }
       }
     });
