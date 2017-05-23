@@ -88,30 +88,6 @@ function getUtilizations(quotas) {
   return utils;
 }
 
-function updateOrSaveUtil(latestUtil) {
-
-  var updateOrSave = (err, util) => {
-    if (err) {
-      // Some error occurred
-      console.log('Some error occurred while attempting to update or save util.');
-    } else {
-      if (util) {
-        // We found a value, update!
-        LatestUtilization.update({ _id: util._id }, latestUtil);
-      } else {
-        // No value found, create
-        util = new LatestUtilization(latestUtil);
-      }
-      util.save((error) => {
-        if(error) console.log(`Some error occurred while saving util: ${error}`);
-      });
-    }
-  };
-  console.log('LatestUtilization.find...');
-  LatestUtilization.find({ quotaName: latestUtil.quotaName, namespace: latestUtil.namespace },
-    updateOrSave
-  );
-}
 
 /**
  * Uses the Kubernetes API to collect and store namespace utilizations
@@ -136,8 +112,29 @@ function collectUtilizations(callback) {
         callback(err);
       } else {
         console.log(`storedUtils: ${latestUtils}`);
-        for (var util of latestUtils) {
-          updateOrSaveUtil(util);
+        for (var latest of latestUtils) {
+          // Update or save using using closure
+          // TODO: Figure out a way to not define callback closure in loop
+          LatestUtilization.find({ quotaName: latest.quotaName, namespace: latest.namespace },
+            (err, util) => {
+              if (err) {
+                // Some error occurred
+                console.log(`Some error occurred while attempting to update or save util: ${err}`);
+              } else {
+                if (util) {
+                  // We found a value, update!
+                  LatestUtilization.update({ _id: util._id }, latest);
+                } else {
+                  // No value found, create
+                  util = new LatestUtilization(latest);
+                }
+                util.save((error) => {
+                  if(error)
+                    console.log(`Some error occurred while saving util: ${error}`);
+                });
+              }
+            }
+          );
         }
       }
     });
