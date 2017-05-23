@@ -123,7 +123,7 @@ function collectUtilizations(callback) {
               } else {
                 if (util) {
                   // We found a value, update!
-                  console.log(`Util already exists, updating... util: ${util}`);
+                  console.log(`Util already exists, updating... util: ${JSON.stringify(util)}`);
                   LatestUtilization.update({ _id: util._id },
                     new LatestUtilization(latest));
                   //util = new LatestUtilization(latest);
