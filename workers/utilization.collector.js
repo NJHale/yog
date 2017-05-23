@@ -107,7 +107,7 @@ function updateOrSaveUtil(latestUtil) {
   };
   console.log('LatestUtilization.find...');
   LatestUtilization.find({ quotaName: latestUtil.quotaName, namespace: latestUtil.namespace },
-    updateOrSave(err, u)
+    updateOrSave
   );
 }
 
