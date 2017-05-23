@@ -34,13 +34,46 @@ routes.get('/utilizations', (req, res) => {
         // Respond with an error
         res.status(400).json(err);
       } else {
-        // Change status to 200 "OK" and package the json response
+        // Change status to 200 "OK" and utilization the json response
         res.status(200).json(utils);
       }
     }).limit(Number(num));
   } catch (ex) {
     // Set and send status 500 "Internal Service Error"
     res.status(500).json(JSON.stringify(ex));
+  }
+});
+
+/**
+ * utilization endpoint for getting all utilizations of a particular namespace
+ * @type {Boolean}
+ */
+routes.get('/utilizations/:namespace', (req, res) => {
+  try {
+    var namespace = req.params.namespace;
+    console.log(`namespace: ${namespace}`);
+    // Make sure we were given a namespace to query
+    if (namespace) {
+      // Perform a find on the namespace
+      Utilization.find({ namespace: namespace }, (err, utilizations) => {
+        // Check for an error case
+        if (err) {
+          console.log(`An error was detected while getting the utilizations: ${err}`);
+          // Return an error
+          res.status(400).json(err);
+        } else {
+          // Change status to 200 "OK" and utilization the json response
+          res.status(200).json(utilizations);
+        }
+      }).sort({ time: 'descending' });
+    } else {
+      // Set and send status 400 "Bad Request"
+      res.status(400).send('A namespace parameter must be provided.');
+    }
+  } catch (ex) {
+    console.log(ex);
+    // Set and send status 400 "Bad Request"
+    res.status(400).json(JSON.stringify(ex));
   }
 });
 

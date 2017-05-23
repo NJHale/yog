@@ -10,7 +10,7 @@ var config = require('../config');
 
 // Require all app routes
 var utilizationRoutes = require('./utilization.routes');
-var infoRoutes = require('./info.routes.js');
+var kubeRoutes = require('./kube.routes');
 
 // Get an instance of an express router
 var routes = express.Router();
@@ -44,7 +44,7 @@ routes.use(bodyParser.json());
 routes.use('/api',
   [
     utilizationRoutes,
-    infoRoutes
+    kubeRoutes
   ]
 );
 
