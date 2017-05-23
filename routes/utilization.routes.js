@@ -95,6 +95,9 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
  */
 routes.get('/utilizations/:namespace', (req, res) => {
   try {
+    // Request a reduction
+    reduceUtilizations.requested = true;
+    // Get the namespace path parameter
     var namespace = req.params.namespace;
     console.log(`namespace: ${namespace}`);
     // Make sure we were given a namespace to query
