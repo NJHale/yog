@@ -116,23 +116,23 @@ function collectUtilizations(callback) {
           // Update or save using using closure
           // TODO: Figure out a way to not define callback closure in loop
           LatestUtilization.find({ quotaName: latest.quotaName, namespace: latest.namespace },
-            (err, util) => {
+            (err, utils) => {
               if (err) {
                 // Some error occurred
                 console.log(`Some error occurred while attempting to update or save util: ${err}`);
               } else {
-                if (util) {
+                if (utils && utils.length > 0) {
                   // We found a value, update!
                   console.log(`Util already exists, updating... util: ${JSON.stringify(util)}`);
-                  LatestUtilization.update({ _id: util._id },
+                  LatestUtilization.update({ _id: utils[0]._id },
                     new LatestUtilization(latest));
                   //util = new LatestUtilization(latest);
                 } else {
                   console.log('Util doesn\'t exist, creating... ');
                   // No value found, create
-                  util = new LatestUtilization(latest);
+                  utils = [new LatestUtilization(latest)];
                 }
-                util.save((error) => {
+                utils[0].save((error) => {
                   if(error)
                     console.log(`Some error occurred while saving util: ${error}`);
                 });
