@@ -45,6 +45,42 @@ routes.get('/utilizations', (req, res) => {
 });
 
 /**
+ * utilization endpoint for getting all utilizations of a particular namespace
+ * @type {Boolean}
+ */
+routes.get('/utilizations/:namespace', (req, res) => {
+  try {
+    // Request a map reduce
+    //reduceUtilizations.requested = true;
+    // Get the namespace path parameter
+    var namespace = req.params.namespace;
+    console.log(`namespace: ${namespace}`);
+    // Make sure we were given a namespace to query
+    if (namespace) {
+      // Perform a find on the namespace
+      Utilization.find({ namespace: namespace }, (err, utilizations) => {
+        // Check for an error case
+        if (err) {
+          console.log(`An error was detected while getting the utilizations: ${err}`);
+          // Return an error
+          res.status(400).json(err);
+        } else {
+          // Change status to 200 "OK" and utilization the json response
+          res.status(200).json(utilizations);
+        }
+      }).sort({ time: 'descending' });
+    } else {
+      // Set and send status 400 "Bad Request"
+      res.status(400).send('A namespace parameter must be provided.');
+    }
+  } catch (ex) {
+    console.log(ex);
+    // Set and send status 400 "Bad Request"
+    res.status(400).json(JSON.stringify(ex));
+  }
+});
+
+/**
  * Package endpoint for getting the latest utilizations
  * @type {Boolean}
  */
@@ -89,41 +125,6 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
 });
 
 
-/**
- * utilization endpoint for getting all utilizations of a particular namespace
- * @type {Boolean}
- */
-routes.get('/utilizations/:namespace', (req, res) => {
-  try {
-    // Request a map reduce
-    //reduceUtilizations.requested = true;
-    // Get the namespace path parameter
-    var namespace = req.params.namespace;
-    console.log(`namespace: ${namespace}`);
-    // Make sure we were given a namespace to query
-    if (namespace) {
-      // Perform a find on the namespace
-      Utilization.find({ namespace: namespace }, (err, utilizations) => {
-        // Check for an error case
-        if (err) {
-          console.log(`An error was detected while getting the utilizations: ${err}`);
-          // Return an error
-          res.status(400).json(err);
-        } else {
-          // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
-        }
-      }).sort({ time: 'descending' });
-    } else {
-      // Set and send status 400 "Bad Request"
-      res.status(400).send('A namespace parameter must be provided.');
-    }
-  } catch (ex) {
-    console.log(ex);
-    // Set and send status 400 "Bad Request"
-    res.status(400).json(JSON.stringify(ex));
-  }
-});
 
 /**
  * Performs a map-reduce on the utilization collection and stores the result
