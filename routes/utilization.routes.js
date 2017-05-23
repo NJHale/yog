@@ -83,6 +83,7 @@ routes.get('/utilizations/:namespace', (req, res) => {
  * @type {Boolean}
  */
 routes.get('/utilizations/latest', (req, res) => {
+  console.log('Attempting to retrieve latest utilizations...');
   try {
       // Perform a find on the namespace
       LatestUtilization.find((err, utilizations) => {
