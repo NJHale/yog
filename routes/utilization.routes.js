@@ -88,7 +88,7 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
   try {
     // Get the namespace
     var namespace = req.params.namespace;
-    console.log(`namespace: ${namespace}`);
+    console.log(`/latest/namespace: ${namespace}`);
 
     if (namespace) {
       // Perform a find on the namespace
