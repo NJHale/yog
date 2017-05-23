@@ -123,8 +123,11 @@ function collectUtilizations(callback) {
               } else {
                 if (util) {
                   // We found a value, update!
+                  console.log('Util already exists, updating...');
                   LatestUtilization.update({ _id: util._id }, latest);
+                  util = new LatestUtilization(latest);
                 } else {
+                  console.log('Util doesn\'t exist, creating...');
                   // No value found, create
                   util = new LatestUtilization(latest);
                 }
