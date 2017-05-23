@@ -11,9 +11,9 @@ var config = require('../config');
 var UtilizationSchema = require('../schemas/utilization.schema').UtilizationSchema;
 
 // Create the mongoose model and instance of all models
-var Utilization = mongoose.model('Utilization', UtilizationSchema);
+var Utilization = mongoose.model('utilization', UtilizationSchema);
 // Also create a mongoose model for the latest Utilizations
-var LatestUtilization = mongoose.model('LatestUtilization', UtilizationSchema);
+var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
 
 // Get an express router instance
 var routes = express.Router();
