@@ -13,7 +13,7 @@ var UtilizationSchema = require('../schemas/utilization.schema');
 // Create the mongoose model and instance of all models
 var Utilization = mongoose.model('Utilization', UtilizationSchema);
 // Also create a mongoose model for the latest Utilizations
-var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
+var LatestUtilization = mongoose.model('LatestUtilization', UtilizationSchema);
 
 // Get an express router instance
 var routes = express.Router();
@@ -95,8 +95,8 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
  */
 routes.get('/utilizations/:namespace', (req, res) => {
   try {
-    // Request a reduction
-    reduceUtilizations.requested = true;
+    // Request a map reduce
+    //reduceUtilizations.requested = true;
     // Get the namespace path parameter
     var namespace = req.params.namespace;
     console.log(`namespace: ${namespace}`);

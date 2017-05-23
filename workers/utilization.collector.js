@@ -88,14 +88,24 @@ function getUtilizations(quotas) {
   return utils;
 }
 
+function updateOrSaveUtil(err, util) {
+  if (err) {
+    // Some error occurred
+    console.log('Some error occurred while attempting to update or save util.');
+  } else if (util) {
+    // We found a value, update!
+    LatestUtilization.update({ _id: u._id }, util);
+  } else {
+    // No value found, create
+    LatestUtilization.save(util);
+  }
+}
 
 /**
  * Uses the Kubernetes API to collect and store namespace utilizations
  */
 function collectUtilizations(callback) {
   console.log(`[${process.pid}]: collectUtilizations called!`);
-
-
   // Call the Kubernetes API and get all resource quotas
   request.get(config.kubeAPIURL + '/api/v1/resourcequotas', {
     'auth': {
@@ -108,13 +118,20 @@ function collectUtilizations(callback) {
 
     console.log(`utils: ${utils}`);
 
-    Utilization.create(utils, (err, results) => {
+    Utilization.create(utils, (err, storedUtils) => {
       if (err) {
         console.log(`error: ${err}`);
+        callback(err);
       } else {
-        console.log(`results: ${results}`);
+        console.log(`storedUtils: ${storedUtils}`);
+        for (var util of storedUtils) {
+          LatestUtilization.find({ quotaName: util.quotaName, namespace: util.namespace },
+            updateOrSaveUtil(err, u)
+          );
+        }
       }
     });
+
 
   });
 
