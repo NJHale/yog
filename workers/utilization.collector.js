@@ -133,9 +133,13 @@ function collectUtilizations(callback) {
                   utils = [new LatestUtilization(latest)];
                   console.log(`util to be created: ${JSON.stringify(utils[0])}`);
                 }
-                utils[0].save((error) => {
-                  if(error)
+                utils[0].save((error, result) => {
+                  if(error) {
                     console.log(`Some error occurred while saving util: ${error}`);
+                  }
+                  else {
+                    console.log(`result: ${result}`);
+                  }
                 });
               }
             }
