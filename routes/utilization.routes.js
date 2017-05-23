@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var config = require('../config');
 
 // Require appropriate schemas
-var UtilizationSchema = require('../schemas/utilization.schema');
+var UtilizationSchema = require('../schemas/utilization.schema').UtilizationSchema;
 
 // Create the mongoose model and instance of all models
 var Utilization = mongoose.model('Utilization', UtilizationSchema);
