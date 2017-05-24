@@ -5,7 +5,7 @@ MAINTAINER Nick Costanzo <costanzo.nicholas.j@gmail.com>
 # Switch to user root
 USER root
 
-RUN yum install -y rsync
+# RUN yum install -y rsync
 
 # Create a working directory for the application to sit in
 WORKDIR /app
@@ -30,5 +30,5 @@ EXPOSE 8080
 USER 1001
 
 # Run the start script
-# ENTRYPOINT ["npm", "start"]
-ENTRYPOINT ["nodemon", "server.js"]
+ENTRYPOINT ["npm", "start"]
+# ENTRYPOINT ["nodemon", "server.js"]
