@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y rsync && \
     # npm run typings install && \
     npm run ng build - --prod && \
     npm install -g nodemon && \
-    chmod 777 -R /app && mkdir /.config chmod 777 -R /.config
+    chmod 777 -R /app && mkdir /.config && chmod 777 -R /.config
 
 # Expose the nodejs port
 EXPOSE 8080
