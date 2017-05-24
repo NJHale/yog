@@ -149,24 +149,30 @@ function updateOrCreateLatestUtilization(latest) {
  */
 function collectUtilizations(callback) {
   console.log(`[${process.pid}]: collectUtilizations called!`);
+
   // Call the Kubernetes API and get all resource quotas
   request.get(config.kubeAPIURL + '/api/v1/resourcequotas', {
     'auth': {
       'bearer': config.kubeAuthToken
     }
   },(err, resp, body) => {
+
+    // If there is an error, log it
     if(err) console.log(`error: ${err}`);
 
+    // Retreive the latest utilizations
     var utils = getUtilizations(JSON.parse(body));
-
     console.log(`utils: ${utils}`);
 
+    // Bulk create new documents for all of the latest Utilizations
     Utilization.create(utils, (err, latestUtils) => {
       if (err) {
         console.log(`error: ${err}`);
         callback(err);
       } else {
         console.log(`storedUtils: ${latestUtils}`);
+
+        // Iterate over all of the utilization objects that were returned
         for (var latest of latestUtils) {
 
           // Update or save the latest document
