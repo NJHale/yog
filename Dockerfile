@@ -15,7 +15,7 @@ COPY . .
 
 # install dependencies, install typings for typescript, build the angular app,
 #   and give the necessary permissions for things to work correctly
-RUN yum install -y rsync && \
+RUN apt install -y rsync && \
     npm install && \
     # npm run typings install && \
     npm run ng build - --prod && \
