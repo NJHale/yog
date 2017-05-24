@@ -5,6 +5,8 @@ MAINTAINER Nick Costanzo <costanzo.nicholas.j@gmail.com>
 # Switch to user root
 USER root
 
+RUN yum install -y rsync
+
 # Create a working directory for the application to sit in
 WORKDIR /app
 
@@ -15,8 +17,7 @@ COPY . .
 
 # install dependencies, install typings for typescript, build the angular app,
 #   and give the necessary permissions for things to work correctly
-RUN yum install -y rsync && \
-    npm install && \
+RUN npm install && \
     # npm run typings install && \
     npm run ng build - --prod && \
     npm install -g nodemon
