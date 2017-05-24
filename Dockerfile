@@ -5,8 +5,6 @@ MAINTAINER Nick Costanzo <costanzo.nicholas.j@gmail.com>
 # Switch to user root
 USER root
 
-# RUN yum install -y rsync
-
 # Create a working directory for the application to sit in
 WORKDIR /app
 
@@ -17,10 +15,11 @@ COPY . .
 
 # install dependencies, install typings for typescript, build the angular app,
 #   and give the necessary permissions for things to work correctly
-RUN npm install && \
+RUN yum install -y rsync && \
+    npm install && \
     # npm run typings install && \
     npm run ng build - --prod && \
-    npm install -g nodemon
+    npm install -g nodemon && \
     chmod 777 -R /app
 
 # Expose the nodejs port
@@ -30,5 +29,5 @@ EXPOSE 8080
 USER 1001
 
 # Run the start script
-ENTRYPOINT ["npm", "start"]
-# ENTRYPOINT ["nodemon", "server.js"]
+# ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["nodemon", "server.js"]
