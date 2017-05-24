@@ -115,35 +115,35 @@ function collectUtilizations(callback) {
         for (var latest of latestUtils) {
           // Update or save using using closure
           // TODO: Figure out a way to not define callback closure in loop
-          LatestUtilization.find({ quotaName: latest.quotaName, namespace: latest.namespace },
-            (err, utils) => {
-              if (err) {
-                // Some error occurred
-                console.log(`Some error occurred while attempting to update or save util: ${err}`);
+
+          LatestUtilization.find({namespace: latest.namespace, quotaName: latest.quotaName}, (err, foundUtils) => {
+            var utilToSave;
+            if(err) {
+              console.log(`Error while finding utils: ${err}`);
+            } else {
+              if (foundUtils) {
+                console.log('Util already exists, updating...');
+                console.log(`Old ID: ${foundUtils[0]}`);
+                utilToSave = new LatestUtilization(foundUtils[0]);
+                console.log(`New ID: ${utilToSave._id}`);
+                utilToSave.namespace = latest.namespace;
+                utilToSave.quotaName = latest.quotaName;
+                utilToSave.cpuLimit = latest.cpuLimit;
+                utilToSave.cpuUsed = latest.cpuUsed;
+                utilToSave.memLimit = latest.memLimit;
+                utilToSave.memUsed = latest.memUsed;
+                utilToSave.podsLimit = latest.podsLimit;
+                utilToSave.podsUsed = latest.podsUsed;
               } else {
-                if (utils && utils.length > 0) {
-                  // We found a value, update!
-                  console.log(`Util already exists, updating... util: ${JSON.stringify(util)}`);
-                  LatestUtilization.update({ _id: utils[0]._id },
-                    new LatestUtilization(latest));
-                  utils = [new LatestUtilization(latest)];
-                } else {
-                  console.log('Util doesn\'t exist, creating... ');
-                  // No value found, create
-                  utils = [new LatestUtilization(latest)];
-                  console.log(`util to be created: ${JSON.stringify(utils[0])}`);
-                }
-                utils[0].save((error, result) => {
-                  if(error) {
-                    console.log(`Some error occurred while saving util: ${error}`);
-                  }
-                  else {
-                    console.log(`result: ${result}`);
-                  }
-                });
+                console.log('Util does not exist, creating...');
+                utilToSave = new LatestUtilization(latest);
               }
+              utilToSave.save((err, result) => {
+                if(err) console.log(`Error while saving util: ${err}`);
+                else console.log(`Save successful: ${result}`);
+              });
             }
-          );
+          });
         }
       }
     });
