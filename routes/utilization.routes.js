@@ -39,7 +39,8 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
           res.status(400).json(err);
         } else {
           // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send(JSON.stringify(utilizations, null, 3));
         }
       }).sort({ time: 'descending' });
     } else {
@@ -69,8 +70,10 @@ routes.get('/utilizations/latest', (req, res) => {
           // Return an error
           res.status(400).json(err);
         } else {
+          console.log(`retrieved utilizations: ${utilizations}`);
           // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send(JSON.stringify(utilizations, null, 3));
         }
       }).sort({ time: 'descending' });
   } catch (err) {
@@ -100,7 +103,8 @@ routes.get('/utilizations/:namespace', (req, res) => {
           res.status(400).json(err);
         } else {
           // Change status to 200 "OK" and utilization the json response
-          res.status(200).json(utilizations);
+          res.setHeader('Content-Type', 'application/json');
+          res.status(200).send(JSON.stringify(utilizations, null, 3));
         }
       }).sort({ time: 'descending' });
     } else {
@@ -132,7 +136,8 @@ routes.get('/utilizations', (req, res) => {
         res.status(400).json(err);
       } else {
         // Change status to 200 "OK" and utilization the json response
-        res.status(200).json(utils);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(utils, null, 3));
       }
     }).limit(Number(num));
   } catch (ex) {
