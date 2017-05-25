@@ -109,33 +109,24 @@ function updateOrCreateLatestUtilization(latest) {
     } else {
       console.log(`foundUtils: ${foundUtils}`);
       // If a utilization matching the composite key was found, update it.
-      // Otherwise,
-      if (foundUtils && foundUtils.length > 0) {
-        console.log('Util already exists, updating...');
-        console.log(`Old ID: ${foundUtils[0]}`);
+      // Otherwise, create a new one
 
-        // Create new LatestUtilization
-        utilToSave = new LatestUtilization(foundUtils[0]);
-        console.log(`New ID: ${utilToSave._id}`);
+      // Create new LatestUtilization
+      utilToSave = new LatestUtilization(foundUtils[0]);
 
-        // Use the info from the new utilization object to update the document
-        // that will be saved
-        utilToSave.namespace = latest.namespace;
-        utilToSave.quotaName = latest.quotaName;
-        utilToSave.cpuLimit = latest.cpuLimit;
-        utilToSave.cpuUsed = latest.cpuUsed;
-        utilToSave.memLimit = latest.memLimit;
-        utilToSave.memUsed = latest.memUsed;
-        utilToSave.podsLimit = latest.podsLimit;
-        utilToSave.podsUsed = latest.podsUsed;
-      } else {
-        console.log('Util does not exist, creating...');
+      // Use the info from the new utilization object to update/create the
+      // document that will be saved
+      utilToSave.namespace = latest.namespace;
+      utilToSave.quotaName = latest.quotaName;
+      utilToSave.cpuLimit = latest.cpuLimit;
+      utilToSave.cpuUsed = latest.cpuUsed;
+      utilToSave.memLimit = latest.memLimit;
+      utilToSave.memUsed = latest.memUsed;
+      utilToSave.podsLimit = latest.podsLimit;
+      utilToSave.podsUsed = latest.podsUsed;
+      utilToSave.date = Date.now();
 
-        // Create a new LatestUtilization based off of the new utilization object
-        utilToSave = new LatestUtilization(latest);
-      }
-
-      // Save the new/update LatestUtilization document
+      // Save the new/updated LatestUtilization document
       utilToSave.save((err, result) => {
         if(err) console.log(`Error while saving util: ${err}`);
         else console.log(`Save successful: ${result}`);

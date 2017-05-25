@@ -58,6 +58,10 @@ export class AppComponent {
       console.log(this.namespaces);
     });
     this.updateSidenav();
+
+    this.utilizationService.getUtilizations().then(response => {
+      console.log(response);
+    });
   }
 
   /**

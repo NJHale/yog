@@ -9,8 +9,17 @@ export class UtilizationService {
 
   constructor(private http: Http) { }
 
-  getUtilizations(): Promise<Utilization[]> {
-    return this.http.get('/api/utilizations')
+  getUtilizations(namespace?: string): Promise<Utilization[]> {
+    if(!namespace)namespace="";
+    return this.http.get(`/api/utilizations/${namespace}`)
+               .toPromise()
+               .then(response => response.json() as Utilization[])
+               .catch(this.handleError);
+  }
+
+  getLatestUtilizations(namespace?: string): Promise<Utilization[]> {
+    if(!namespace)namespace="";
+    return this.http.get(`/api/utilizations/latest/${namespace}`)
                .toPromise()
                .then(response => response.json() as Utilization[])
                .catch(this.handleError);
@@ -19,11 +28,11 @@ export class UtilizationService {
   getNamespaces(): Promise<string[]> {
     return this.http.get('/api/namespaces')
                .toPromise()
-               .then(this.extractData)
+               .then(this.extractBody)
                .catch(this.handleError);
   }
 
-  private extractData(res: Response) {
+  private extractBody(res: Response) {
     let body = res.json();
     return body.namespaces || { };
   }

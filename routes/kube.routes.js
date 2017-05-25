@@ -30,4 +30,19 @@ routes.get('/namespaces', (req, res) => {
   });
 });
 
+routes.get('/nodes', (req, res) => {
+  request.get(config.kubeAPIURL + '/api/v1/nodes?labelSelector=region%3Dprimary', {
+    'auth': {
+      'bearer': config.kubeAuthToken
+    }
+  }, (err, resp, body) => {
+    if(err) console.log(`error: ${err}`);
+    else {
+      console.log(`nodes: ${body}`);
+    }
+    res.send(body);
+    // res.send(resp);
+  });
+});
+
 module.exports = routes;
