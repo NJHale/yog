@@ -107,10 +107,10 @@ function updateOrCreateLatestUtilization(latest) {
     if(err) {
       console.log(`Error while finding utils: ${err}`);
     } else {
-
+      console.log(`foundUtils: ${foundUtils}`);
       // If a utilization matching the composite key was found, update it.
       // Otherwise,
-      if (foundUtils) {
+      if (foundUtils && foundUtils.length > 0) {
         console.log('Util already exists, updating...');
         console.log(`Old ID: ${foundUtils[0]}`);
 
