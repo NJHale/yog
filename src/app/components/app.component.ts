@@ -1,4 +1,4 @@
-import { Component, ViewChild, HostListener } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
 import { MdSidenav } from '@angular/material';
 
 import { UtilizationService } from '../services/utilization.service'
@@ -8,13 +8,21 @@ import { UtilizationService } from '../services/utilization.service'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   private namespaces: string[];
 
   constructor(
     private utilizationService: UtilizationService
   ) { }
+
+  ngOnInit(): void {
+    this.utilizationService.getNamespaces().then(response => {
+      this.namespaces = response;
+      console.log(this.namespaces);
+    });
+    this.updateSidenav();
+  }
 
   /**
    * Get the md-sidenav from the html to perform actions on it
@@ -47,21 +55,6 @@ export class AppComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.updateSidenav();
-  }
-
-  /**
-   * determine page layout onInit
-   */
-  ngOnInit(): void {
-    this.utilizationService.getNamespaces().then(response => {
-      this.namespaces = response;
-      console.log(this.namespaces);
-    });
-    this.updateSidenav();
-
-    this.utilizationService.getUtilizations().then(response => {
-      console.log(response);
-    });
   }
 
   /**

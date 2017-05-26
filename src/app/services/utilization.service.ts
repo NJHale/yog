@@ -28,11 +28,18 @@ export class UtilizationService {
   getNamespaces(): Promise<string[]> {
     return this.http.get('/api/namespaces')
                .toPromise()
-               .then(this.extractBody)
+               .then(this.extractNamespaces)
                .catch(this.handleError);
   }
 
-  private extractBody(res: Response) {
+  getNodeCapacities(): Promise<string[]> {
+    return this.http.get('/api/nodes')
+               .toPromise()
+               .then(response => response.json() as string[])
+               .catch(this.handleError);
+  }
+
+  private extractNamespaces(res: Response) {
     let body = res.json();
     return body.namespaces || { };
   }

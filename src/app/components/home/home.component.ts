@@ -1,12 +1,72 @@
+import { OnInit } from '@angular/core';
 
 import { Component } from '@angular/core';
+
+import { Utilization } from '../../models/utilization';
+
+import { UtilizationService } from '../../services/utilization.service';
 
 @Component({
   selector: 'home-component',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  private historicalTotalMemUsed: number[] = new Array();
+  private historicalTotalMemLimit: number[] = new Array();
+  private historicalTotalCpuUsed: number[] = new Array();
+  private historicalTotalCpuLimit: number[] = new Array();
+
+  constructor(
+    private utilizationService: UtilizationService
+  ) { }
+
+  /**
+   * determine page layout onInit
+   */
+  ngOnInit(): void {
+    this.utilizationService.getUtilizations().then(response => {
+      this.generateMemoryAndCpuArrays(response);
+      console.log(this.historicalTotalMemUsed);
+      console.log(this.historicalTotalMemLimit);
+      console.log(this.historicalTotalCpuUsed);
+      console.log(this.historicalTotalCpuLimit);
+    });
+
+    this.utilizationService.getNodeCapacities().then(response => {
+      console.log(response);
+    });
+  }
+
+  private generateMemoryAndCpuArrays(utilizations: Utilization[]): void {
+
+    let currentDate: string = "";
+    let memUsedTotal: number = 0;
+    let memLimitTotal: number = 0;
+    let cpuUsedTotal: number = 0;
+    let cpuLimitTotal: number = 0;
+
+    for(let utilization of utilizations) {
+      let newDate: string = utilization.date.substring(0,utilization.date.length-5);
+      if(currentDate != newDate) {
+        currentDate = newDate;
+        this.historicalTotalMemUsed.push(memUsedTotal);
+        memUsedTotal = 0;
+        this.historicalTotalMemLimit.push(memLimitTotal);
+        memLimitTotal = 0;
+        this.historicalTotalCpuUsed.push(cpuUsedTotal);
+        cpuUsedTotal = 0;
+        this.historicalTotalCpuLimit.push(cpuLimitTotal);
+        cpuLimitTotal = 0;
+      } else {
+        memUsedTotal += parseInt(utilization.memUsed);
+        memLimitTotal += parseInt(utilization.memLimit);
+        cpuUsedTotal += parseInt(utilization.cpuUsed);
+        cpuLimitTotal += parseInt(utilization.cpuLimit);
+      }
+    }
+  }
 
   // lineChart
   public lineChartData:Array<any> = [

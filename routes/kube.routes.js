@@ -36,12 +36,17 @@ routes.get('/nodes', (req, res) => {
       'bearer': config.kubeAuthToken
     }
   }, (err, resp, body) => {
+    var capacities = [];
     if(err) console.log(`error: ${err}`);
     else {
-      console.log(`nodes: ${body}`);
+      var items = JSON.parse(body).items;
+      console.log(`nodes: ${items}`);
+      for(var i = 0; i < items.length; i++) {
+        capacities.push(items[i].status.capacity);
+        capacities[i].name = items[i].metadata.name;
+      }
     }
-    res.send(body);
-    // res.send(resp);
+    res.send(JSON.stringify(capacities, null, 3));
   });
 });
 

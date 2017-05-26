@@ -7,5 +7,5 @@ export class Utilization {
   memUsed: string;
   podsLimit: number;
   podsUsed: number;
-  date: any;
+  date: string;
 }
