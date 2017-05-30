@@ -27,7 +27,7 @@
       </div>
     </md-card>
 
-    <md-card card-spacing>
+    <!-- <md-card card-spacing>
       Flat <br />
       <button md-button>Default</button>
       <button md-button color="accent">Accent</button><br />
@@ -48,40 +48,6 @@
       <button md-mini-fab color="warn">Warn</button> <br />
     </md-card>
     <md-card card-spacing><md-icon>check</md-icon>  <br /><md-icon>add</md-icon> <br /></md-card>
-    <md-card card-spacing>test <br />test <br />test <br /></md-card>
-
-    <md-card card-spacing>
-      <div class="row">
-        <div class="col-md-6">
-
-          <div style="display: block;">
-          <canvas baseChart
-                      [datasets]="lineChartData"
-                      [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-        </div>
-
-        <div class="col-md-6" style="margin-bottom: 10px">
-          <table class="table table-responsive table-condensed">
-            <tr>
-              <th *ngFor="let label of lineChartLabels">{{label}}</th>
-            </tr>
-            <tr *ngFor="let d of lineChartData">
-              <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-            </tr>
-          </table>
-          <button md-button (click)="randomize()">CLICK</button>
-        </div>
-
-      </div>
-    </md-card>
-
+    <md-card card-spacing>test <br />test <br />test <br /></md-card> -->
   </div>
 </div>
