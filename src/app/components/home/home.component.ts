@@ -75,26 +75,32 @@ export class HomeComponent implements OnInit {
     let cpuUsedTotal: number = 0;
     let cpuLimitTotal: number = 0;
 
+    let skip: number = 0;
+
     for(let utilization of utilizations) {
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
       if(currentDate != newDate) {
-        this.memLineChartLabels.push(newDate);
-        this.cpuLineChartLabels.push(newDate);
-        currentDate = newDate;
-        this.historicalTotalMemUsed.push(memUsedTotal);
-        memUsedTotal = 0;
-        this.historicalTotalMemLimit.push(memLimitTotal);
-        memLimitTotal = 0;
-        this.historicalTotalCpuUsed.push(cpuUsedTotal);
-        cpuUsedTotal = 0;
-        this.historicalTotalCpuLimit.push(cpuLimitTotal);
-        cpuLimitTotal = 0;
+        if(skip == 0) {
+          this.memLineChartLabels.push(newDate);
+          this.cpuLineChartLabels.push(newDate);
+          currentDate = newDate;
+          this.historicalTotalMemUsed.push(memUsedTotal);
+          memUsedTotal = 0;
+          this.historicalTotalMemLimit.push(memLimitTotal);
+          memLimitTotal = 0;
+          this.historicalTotalCpuUsed.push(cpuUsedTotal);
+          cpuUsedTotal = 0;
+          this.historicalTotalCpuLimit.push(cpuLimitTotal);
+          cpuLimitTotal = 0;
+        }
       } else {
         memUsedTotal += parseInt(utilization.memUsed);
         memLimitTotal += parseInt(utilization.memLimit);
         cpuUsedTotal += parseInt(utilization.cpuUsed);
         cpuLimitTotal += parseInt(utilization.cpuLimit);
       }
+      skip++;
+      if(skip > 72) skip = 0;
     }
   }
 
