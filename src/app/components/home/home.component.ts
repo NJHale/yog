@@ -32,6 +32,34 @@ export class HomeComponent implements OnInit {
       console.log(this.historicalTotalMemLimit);
       console.log(this.historicalTotalCpuUsed);
       console.log(this.historicalTotalCpuLimit);
+
+      let _memLineChartData:Array<any> = new Array();
+      _memLineChartData = [
+        {
+          data: this.historicalTotalMemUsed,
+          label: 'Memory Used'
+        },
+        {
+          data: this.historicalTotalMemLimit,
+          label: 'Memory Limit'
+        }
+      ];
+
+      let _cpuLineChartData:Array<any> = new Array();
+      _cpuLineChartData = [
+        {
+          data: this.historicalTotalCpuUsed,
+          label: 'CPU Used'
+        },
+        {
+          data: this.historicalTotalCpuLimit,
+          label: 'CPU Limit'
+        }
+      ];
+
+      this.memLineChartData = _memLineChartData;
+      this.cpuLineChartData = _cpuLineChartData;
+
     });
 
     this.utilizationService.getNodeCapacities().then(response => {
@@ -47,26 +75,48 @@ export class HomeComponent implements OnInit {
     let cpuUsedTotal: number = 0;
     let cpuLimitTotal: number = 0;
 
+    let skip: number = 0;
+
     for(let utilization of utilizations) {
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
       if(currentDate != newDate) {
-        currentDate = newDate;
-        this.historicalTotalMemUsed.push(memUsedTotal);
-        memUsedTotal = 0;
-        this.historicalTotalMemLimit.push(memLimitTotal);
-        memLimitTotal = 0;
-        this.historicalTotalCpuUsed.push(cpuUsedTotal);
-        cpuUsedTotal = 0;
-        this.historicalTotalCpuLimit.push(cpuLimitTotal);
-        cpuLimitTotal = 0;
+        if(skip == 0) {
+          this.memLineChartLabels.push(newDate);
+          this.cpuLineChartLabels.push(newDate);
+          currentDate = newDate;
+          this.historicalTotalMemUsed.push(memUsedTotal);
+          memUsedTotal = 0;
+          this.historicalTotalMemLimit.push(memLimitTotal);
+          memLimitTotal = 0;
+          this.historicalTotalCpuUsed.push(cpuUsedTotal);
+          cpuUsedTotal = 0;
+          this.historicalTotalCpuLimit.push(cpuLimitTotal);
+          cpuLimitTotal = 0;
+        }
       } else {
         memUsedTotal += parseInt(utilization.memUsed);
         memLimitTotal += parseInt(utilization.memLimit);
         cpuUsedTotal += parseInt(utilization.cpuUsed);
         cpuLimitTotal += parseInt(utilization.cpuLimit);
       }
+      skip++;
+      if(skip > 72) skip = 0;
     }
   }
+
+  // memLineChart
+  public memLineChartData:Array<any> = [
+    {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Used'},
+    {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Limit'}
+  ];
+  memLineChartLabels:Array<any> = [];
+
+  // cpuLineChart
+  public cpuLineChartData:Array<any> = [
+    {data: [], label: 'CPU Used'},
+    {data: [], label: 'CPU Limit'}
+  ];
+  cpuLineChartLabels:Array<any> = [];
 
   // lineChart
   public lineChartData:Array<any> = [
@@ -76,7 +126,13 @@ export class HomeComponent implements OnInit {
   ];
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
-    responsive: true
+    responsive: true,
+    bezierCurve: false,
+    elements: {
+      point: {
+        radius: 0
+      }
+    }
   };
   public lineChartColors:Array<any> = [
     { // grey
