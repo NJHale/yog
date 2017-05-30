@@ -78,6 +78,8 @@ export class HomeComponent implements OnInit {
     for(let utilization of utilizations) {
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
       if(currentDate != newDate) {
+        this.memLineChartLabels.push(newDate);
+        this.cpuLineChartLabels.push(newDate);
         currentDate = newDate;
         this.historicalTotalMemUsed.push(memUsedTotal);
         memUsedTotal = 0;
@@ -101,11 +103,14 @@ export class HomeComponent implements OnInit {
     {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Used'},
     {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Limit'}
   ];
+  memLineChartLabels:Array<any> = [];
 
+  // cpuLineChart
   public cpuLineChartData:Array<any> = [
     {data: [], label: 'CPU Used'},
     {data: [], label: 'CPU Limit'}
-  ]
+  ];
+  cpuLineChartLabels:Array<any> = [];
 
   // lineChart
   public lineChartData:Array<any> = [
