@@ -142,7 +142,8 @@ function UtilizationCollector() {
   * Generic collection function implementation
   */
   this.collect = (callback) => {
-    collectUtilizations(callback);
+    console.log('collect() got called!');
+    this.collectUtilizations(callback);
   };
 
 }

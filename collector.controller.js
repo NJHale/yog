@@ -6,9 +6,10 @@ var collectorIntervalMap = new Map();
 
 function startCollecting(collectorName) {
   console.log(`preceding collectorName: ${collectorName}`);
+  var collector;
   // Check to see if the requested collector exists in the required module
   if (collectorNames.includes(collectorName)) {
-    startCollecting(collectors[collectorName]);
+    collector = collectors[collectorName];
   } else {
     throw `No collector with name ${collectorName} found`;
   }
@@ -34,6 +35,7 @@ function stopCollecting(collectorName) {
 
 process.on("message", (msgStr) => {
   try {
+    console.log(`msgStr ${msgStr}`);
     var msg = JSON.parse(msgStr);
     // Check command
     if (msg.cmd === 'start') {
