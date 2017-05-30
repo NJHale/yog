@@ -68,7 +68,7 @@ function UtilizationCollector() {
       if(err) {
         console.log(`Error while finding utils: ${err}`);
       } else {
-        console.log(`foundUtils: ${foundUtils}`);
+        //console.log(`foundUtils: ${foundUtils}`);
         // If a utilization matching the composite key was found, update it.
         // Otherwise, create a new one
 
@@ -90,7 +90,7 @@ function UtilizationCollector() {
         // Save the new/updated LatestUtilization document
         utilToSave.save((err, result) => {
           if(err) console.log(`Error while saving util: ${err}`);
-          else console.log(`Save successful: ${result}`);
+          //else console.log(`Save successful: ${result}`);
         });
       }
     });
@@ -122,7 +122,7 @@ function UtilizationCollector() {
           console.log(`error: ${err}`);
           callback(err);
         } else {
-          console.log(`storedUtils: ${latestUtils}`);
+          //console.log(`storedUtils: ${latestUtils}`);
 
           // Iterate over all of the utilization objects that were returned
           for (var latest of latestUtils) {
