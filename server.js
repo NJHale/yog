@@ -38,10 +38,10 @@ app.use(express.static(__dirname + '/dist'));
 * ROUTING *
 **********/
 
-// Add routes and routing middle-ware for internal api
-// ./routes/index.js is the default code to be hit
-var appRoutes = require('./routes');
-app.use(appRoutes);
+// Add routers and routing middle-ware for internal api
+// ./routers/index.js is the default code to be hit
+var appRouters = require('./routers');
+app.use(appRouters);
 
 /**
 * Redirect pages used by the frontend to index.html for everything else
@@ -55,19 +55,26 @@ app.get('*', function(req, res) {
 * DATA COLLECTION DAEMONS *
 **************************/
 
-// Fork and start the child process
-var fork = cp.fork('./workers/utilization.collector').on('message', (msg) => {
-  console.log(`Message from child process received: ${msg}`);
-});
+try {
+  // Fork and start the child process
+  var fork = cp.fork('./collector.controller').on('message', (msgStr) => {
+    console.log(`Message from child process received: ${msgStr}`);
+  });
 
-// Trigger the child process to start collecting data
-fork.send('start');
+  // Trigger the child process to start collecting data
+  fork.send(JSON.stringify({
+    cmd: 'start',
+    collectorNames: ['utilizationCollector']
+  }));
 
-// Handle nodejs shutdown
-process.on('exit', () => {
-  try {
-    fork.kill();
-  } catch(ex) {
-    console.log(`An exception occurred while killing child process: ${ex}`);
-  }
-});
+  // Handle nodejs shutdown
+  process.on('exit', () => {
+    try {
+      fork.kill();
+    } catch(ex) {
+      console.log(`An exception occurred while killing child process: ${ex}`);
+    }
+  });
+} catch (ex) {
+  console.log(`An exception has occurred during daemon process kickoff: ${ex}`);
+}

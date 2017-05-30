@@ -8,16 +8,16 @@ var bodyParser = require('body-parser');
 // Get the configuration object
 var config = require('../config');
 
-// Require all app routes
-var utilizationRoutes = require('./utilization.routes');
-var kubeRoutes = require('./kube.routes');
+// Require all app routers
+var utilizationRouter = require('./utilization.router');
+var kubeRouter = require('./kube.router');
 
 // Get an instance of an express router
-var routes = express.Router();
+var router = express.Router();
 
 // Configure the express router to use body-parser as middleware to handle post requests
-routes.use(bodyParser.urlencoded({ extended: true }));
-routes.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
 
 // ** BOILERPLATE FOR API PROXYING **
 // const WHATEVER_BASE_URL = 'https://whatever';
@@ -34,22 +34,22 @@ routes.use(bodyParser.json());
 //
 //
 //
-// routes.use('/api-proxy',
+// router.use('/api-proxy',
 //   [
 //     apiProxy
 //   ]
 // );
 
-// Use all app routes at the base path
-routes.use('/api',
+// Use all app routers at the base path
+router.use('/api',
   [
-    utilizationRoutes,
-    kubeRoutes
+    utilizationRouter,
+    kubeRouter
   ]
 );
 
 // Define a default health path at /
-routes.get('/health', (req, res) => {
+router.get('/health', (req, res) => {
   try {
     console.log('yog running on ' + process.env.APP_POD_NAME);
     // Return a 200 'OK'
@@ -59,5 +59,5 @@ routes.get('/health', (req, res) => {
   }
 });
 
-// Export the routes as an unnamed object
-module.exports = routes;
+// Export the router as an unnamed object
+module.exports = router;

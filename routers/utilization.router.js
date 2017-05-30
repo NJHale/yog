@@ -1,4 +1,4 @@
-// utilization.routes.js
+// utilization.router.js
 
 // Require appropriate modules
 var express = require('express');
@@ -16,14 +16,14 @@ var Utilization = mongoose.model('utilization', UtilizationSchema);
 var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
 
 // Get an express router instance
-var routes = express.Router();
+var router = express.Router();
 
 
 /**
  * Package endpoint for getting the latest utilizations
  * @type {Boolean}
  */
-routes.get('/utilizations/latest/:namespace', (req, res) => {
+router.get('/utilizations/latest/:namespace', (req, res) => {
   try {
     // Get the namespace
     var namespace = req.params.namespace;
@@ -59,7 +59,7 @@ routes.get('/utilizations/latest/:namespace', (req, res) => {
  * Utilization endpoint for getting the latest utilizations
  * @type {Boolean}
  */
-routes.get('/utilizations/latest', (req, res) => {
+router.get('/utilizations/latest', (req, res) => {
   console.log('Attempting to retrieve latest utilizations...');
   try {
       // Perform a find on the namespace
@@ -87,7 +87,7 @@ routes.get('/utilizations/latest', (req, res) => {
  * Utilization endpoint for getting all utilizations of a particular namespace
  * @type {Boolean}
  */
-routes.get('/utilizations/:namespace', (req, res) => {
+router.get('/utilizations/:namespace', (req, res) => {
   try {
     // Get the namespace path parameter
     var namespace = req.params.namespace;
@@ -123,7 +123,7 @@ routes.get('/utilizations/:namespace', (req, res) => {
   * Utlization endpoint for getting all dropboxes
   * @type {[type]}
   */
-routes.get('/utilizations', (req, res) => {
+router.get('/utilizations', (req, res) => {
   try {
     // Get the number of elements to retrieve - null should be 0 to get all
     var num = req.query.num === null ? 0 : req.query.num;
@@ -233,4 +233,4 @@ var reductionInterval = setInterval(() => {
 }, config.reductionDT);
 
 // Export the express router as an unnamed object
-module.exports = routes;
+module.exports = router;

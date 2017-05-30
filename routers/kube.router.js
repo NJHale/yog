@@ -1,11 +1,11 @@
-// info.routes.js
+// info.router.js
 
 var express = require('express');
-var routes = express.Router();
+var router = express.Router();
 var request = require('request');
 var config = require('../config');
 
-routes.get('/namespaces', (req, res) => {
+router.get('/namespaces', (req, res) => {
   request.get(config.kubeAPIURL + '/api/v1/namespaces', {
     'auth': {
       'bearer': config.kubeAuthToken
@@ -30,7 +30,7 @@ routes.get('/namespaces', (req, res) => {
   });
 });
 
-routes.get('/nodes', (req, res) => {
+router.get('/nodes', (req, res) => {
   request.get(config.kubeAPIURL + '/api/v1/nodes?labelSelector=region%3Dprimary', {
     'auth': {
       'bearer': config.kubeAuthToken
@@ -50,4 +50,4 @@ routes.get('/nodes', (req, res) => {
   });
 });
 
-module.exports = routes;
+module.exports = router;
