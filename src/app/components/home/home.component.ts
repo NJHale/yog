@@ -126,7 +126,12 @@ export class HomeComponent implements OnInit {
   ];
   public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   public lineChartOptions:any = {
-    responsive: true
+    responsive: true,
+    elements: {
+      point: {
+        radius: 0
+      }
+    }
   };
   public lineChartColors:Array<any> = [
     { // grey
