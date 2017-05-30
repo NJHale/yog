@@ -5,8 +5,9 @@ var collectorNames = Object.keys(collectors);
 var collectorIntervalMap = new Map();
 
 function startCollecting(collectorName) {
+  console.log(`preceding collectorName: ${collectorName}`);
   // Check to see if the requested collector exists in the required module
-  if (collectorNames.contains(collectorName)) {
+  if (collectorNames.includes(collectorName)) {
     startCollecting(collectors[collectorName]);
   } else {
     throw `No collector with name ${collectorName} found`;
@@ -38,6 +39,7 @@ process.on("message", (msgStr) => {
     if (msg.cmd === 'start') {
       // Start collecting with all of the collectors
       for (var collectorName of msg.collectorNames) {
+        console.log(`CollectorName ${collectorName}`);
         if (!collectorIntervalMap.has(collectorName)) {
           startCollecting(collectorName);
         } else {

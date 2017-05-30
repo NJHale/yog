@@ -58,14 +58,13 @@ app.get('*', function(req, res) {
 try {
   // Fork and start the child process
   var fork = cp.fork('./collector.controller').on('message', (msgStr) => {
-    var msg = JSON.parse(msgStr);
-    console.log(`Message from child process received: ${msg.status}`);
+    console.log(`Message from child process received: ${msgStr}`);
   });
 
   // Trigger the child process to start collecting data
   fork.send(JSON.stringify({
-    msg: 'start',
-    collectorNames: ['UtilizationCollector']
+    cmd: 'start',
+    collectorNames: ['utilizationCollector']
   }));
 
   // Handle nodejs shutdown

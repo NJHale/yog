@@ -18,9 +18,9 @@ var LatestUtilization = mongoose.model('latestutilization', UtilizationSchema);
 
 function UtilizationCollector() {
 
-  collector.name = 'UtilizationCollector';
+  this.name = 'utilizationCollector';
 
-  collector.dt = config.kubePollingDT;
+  this.dt = config.kubePollingDT;
   /**
    * Parses the given Kubernetes ResourceQuotaList and returns a stack of
    * Utilization mongo models
@@ -147,4 +147,4 @@ function UtilizationCollector() {
 
 }
 
-modules.exports = new UtilizationCollector();
+module.exports = new UtilizationCollector();
