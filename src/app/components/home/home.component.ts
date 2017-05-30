@@ -32,6 +32,34 @@ export class HomeComponent implements OnInit {
       console.log(this.historicalTotalMemLimit);
       console.log(this.historicalTotalCpuUsed);
       console.log(this.historicalTotalCpuLimit);
+
+      let _memLineChartData:Array<any> = new Array();
+      _memLineChartData = [
+        {
+          data: this.historicalTotalMemUsed,
+          label: 'Memory Used'
+        },
+        {
+          data: this.historicalTotalMemLimit,
+          label: 'Memory Limit'
+        }
+      ];
+
+      let _cpuLineChartData:Array<any> = new Array();
+      _cpuLineChartData = [
+        {
+          data: this.historicalTotalCpuUsed,
+          label: 'CPU Used'
+        },
+        {
+          data: this.historicalTotalCpuLimit,
+          label: 'CPU Limit'
+        }
+      ];
+
+      this.memLineChartData = _memLineChartData;
+      this.cpuLineChartData = _cpuLineChartData;
+
     });
 
     this.utilizationService.getNodeCapacities().then(response => {
@@ -67,6 +95,17 @@ export class HomeComponent implements OnInit {
       }
     }
   }
+
+  // memLineChart
+  public memLineChartData:Array<any> = [
+    {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Used'},
+    {data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], label: 'Memory Limit'}
+  ];
+
+  public cpuLineChartData:Array<any> = [
+    {data: [], label: 'CPU Used'},
+    {data: [], label: 'CPU Limit'}
+  ]
 
   // lineChart
   public lineChartData:Array<any> = [

@@ -4,6 +4,28 @@
   <!-- First column -->
   <div card-column-1 layout="column">
     <md-card card-spacing>
+      <div style="display: block;">
+        <canvas baseChart
+                [datasets]="memLineChartData"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [chartType]="lineChartType">
+        </canvas>
+      </div>
+    </md-card>
+
+    <md-card card-spacing>
+      <div style="display: block;">
+        <canvas baseChart
+                [datasets]="cpuLineChartData"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [chartType]="lineChartType">
+        </canvas>
+      </div>
+    </md-card>
+
+    <md-card card-spacing>
       Flat <br />
       <button md-button>Default</button>
       <button md-button color="accent">Accent</button><br />
