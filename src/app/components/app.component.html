@@ -40,7 +40,7 @@
         </a>
       </md-list-item>
       <md-list-item *ngFor="let namespace of namespaces">
-        <a [routerLink]="['/project', {namespace: namespace}]">
+        <a [routerLink]="['/project', namespace]">
           <md-icon class = "navIcon" md-list-avatar>label</md-icon>
           <span font = "roboto">{{namespace}}</span>
         </a>
