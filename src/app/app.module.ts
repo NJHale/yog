@@ -12,13 +12,15 @@ import { routing } from './app.routing';
 
 import { AppComponent } from './components/app.component';
 import { HomeComponent } from './components/home/home.component';
+import { ProjectComponent } from './components/project/project.component';
 
 import { UtilizationService } from './services/utilization.service'
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
