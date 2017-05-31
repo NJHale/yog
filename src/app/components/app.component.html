@@ -33,11 +33,14 @@
       </div>
     </div>
     <md-nav-list text = "secondary">
-      <md-list-item (click) = "sidenav.close(); goHome()">
-        <md-icon class = "navIcon" md-list-avatar>home</md-icon>
-        <span font = "roboto">HOME</span>
+      <md-list-item (click) = "sidenav.close();">
+        <a [routerLink]="['/home']">
+          <md-icon class = "navIcon" md-list-avatar>home</md-icon>
+          <span font = "roboto">HOME</span>
+        </a>
       </md-list-item>
       <md-list-item *ngFor="let namespace of namespaces">
+        <a [routerLink]="['/project', {namespace: namespace}]"
         <md-icon class = "navIcon" md-list-avatar>label</md-icon>
         <span font = "roboto">{{namespace}}</span>
       </md-list-item>
