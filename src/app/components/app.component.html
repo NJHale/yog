@@ -40,9 +40,10 @@
         </a>
       </md-list-item>
       <md-list-item *ngFor="let namespace of namespaces">
-        <a [routerLink]="['/project', {namespace: namespace}]"
-        <md-icon class = "navIcon" md-list-avatar>label</md-icon>
-        <span font = "roboto">{{namespace}}</span>
+        <a [routerLink]="['/project', {namespace: namespace}]">
+          <md-icon class = "navIcon" md-list-avatar>label</md-icon>
+          <span font = "roboto">{{namespace}}</span>
+        </a>
       </md-list-item>
       <!-- <md-list-item (click) = "sidenav.close(); goToPage2()">
         <md-icon class = "navIcon" md-list-avatar>markunread_mailbox</md-icon>
