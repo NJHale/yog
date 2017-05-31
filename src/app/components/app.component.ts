@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.utilizationService.getNamespaces().then(response => {
       this.namespaces = response;
-      console.log(this.namespaces);
     });
     this.updateSidenav();
   }

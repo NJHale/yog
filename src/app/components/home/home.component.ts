@@ -1,6 +1,4 @@
-import { OnInit } from '@angular/core';
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Utilization } from '../../models/utilization';
 
@@ -15,10 +13,10 @@ export class HomeComponent implements OnInit {
 
   private readonly SKIP_FREQ = 0;
 
-  private historicalTotalMemUsed: number[] = new Array();
-  private historicalTotalMemLimit: number[] = new Array();
-  private historicalTotalCpuUsed: number[] = new Array();
-  private historicalTotalCpuLimit: number[] = new Array();
+  private historicalTotalMemUsed: number[] = [];
+  private historicalTotalMemLimit: number[] = [];
+  private historicalTotalCpuUsed: number[] = [];
+  private historicalTotalCpuLimit: number[] = [];
 
   constructor(
     private utilizationService: UtilizationService
@@ -30,10 +28,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.utilizationService.getUtilizations().then(response => {
       this.generateMemoryAndCpuArrays(response);
-      console.log(this.historicalTotalMemUsed);
-      console.log(this.historicalTotalMemLimit);
-      console.log(this.historicalTotalCpuUsed);
-      console.log(this.historicalTotalCpuLimit);
 
       let _memLineChartData:Array<any> = new Array();
       _memLineChartData = [
