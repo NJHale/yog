@@ -92,10 +92,16 @@ router.get('/utilizations/:namespace', (req, res) => {
     // Get the namespace path parameter
     var namespace = req.params.namespace;
     console.log(`namespace: ${namespace}`);
+    // Get the optional start date
+    var start = req.query.start ? new Date(Date.parse(req.query.start)) : new Date(0);
+    // Get the optional end date
+    var end = req.query.end ? new Date(Date.parse(req.query.end)) : new Date();
+
     // Make sure we were given a namespace to query
     if (namespace) {
       // Perform a find on the namespace
-      Utilization.find({ namespace: namespace }, (err, utilizations) => {
+      Utilization.find({ namespace: namespace, date: {"$gte": start, "$lt": end} },
+        (err, utilizations) => {
         // Check for an error case
         if (err) {
           console.log(`An error was detected while getting the utilizations: ${err}`);
@@ -127,8 +133,14 @@ router.get('/utilizations', (req, res) => {
   try {
     // Get the number of elements to retrieve - null should be 0 to get all
     var num = req.query.num === null ? 0 : req.query.num;
-    // Perform a find all with mongoose
-    Utilization.find((err, utils) => {
+    // Get the optional start date alright?
+    var start = req.query.start ? new Date(Date.parse(req.query.start)) : new Date(0);
+    // Get the optional end date
+    var end = req.query.end ? new Date(Date.parse(req.query.end)) : new Date();
+
+    console.log(`start: ${start}, end: ${end}`);
+    // Perform a find with mongoose
+    Utilization.find({ date: {"$gte": start, "$lt": end} }, (err, utils) => {
       // Check for an error case
       if (err !== null) {
         console.log(`An error was detected when retrieving utilizations: ${err}`);
