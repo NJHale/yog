@@ -216,21 +216,21 @@ reduceUtilizations.requested = false;
 reduceUtilizations.reducing = false;
 
 // Create an interval for the utilizations to be reduced on
-var reductionInterval = setInterval(() => {
-  //console.log('Checking for reduction requests...')
-  // Check if a reduce has been requested and one is not currently running
-  if (reduceUtilizations.requested && !reduceUtilizations.reducing) {
-    console.log(`Utilization reduction request detected!
-      \nKicking off new reduction at ${Date.now()}`);
-    // Set requested to false
-    reduceUtilizations.requested = false;
-    // Reduce the utilizations
-    reduceUtilizations();
-  } else {
-    //console.log('Reduction request not detected.');
-  }
-  //console.log('Continuing to next interval...');
-}, config.reductionDT);
+// var reductionInterval = setInterval(() => {
+//   //console.log('Checking for reduction requests...')
+//   // Check if a reduce has been requested and one is not currently running
+//   if (reduceUtilizations.requested && !reduceUtilizations.reducing) {
+//     console.log(`Utilization reduction request detected!
+//       \nKicking off new reduction at ${Date.now()}`);
+//     // Set requested to false
+//     reduceUtilizations.requested = false;
+//     // Reduce the utilizations
+//     reduceUtilizations();
+//   } else {
+//     //console.log('Reduction request not detected.');
+//   }
+//   //console.log('Continuing to next interval...');
+// }, config.reductionDT);
 
 // Export the express router as an unnamed object
 module.exports = router;
