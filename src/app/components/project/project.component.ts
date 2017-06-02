@@ -14,10 +14,10 @@ export class ProjectComponent implements OnInit {
 
   private namespace: string = "";
 
-  private historicalMemUsed: string[] = [];
-  private historicalMemLimit: string[] = [];
-  private historicalCpuUsed: string[] = [];
-  private historicalCpuLimit: string[] = [];
+  private historicalMemUsed: number[] = [];
+  private historicalMemLimit: number[] = [];
+  private historicalCpuUsed: number[] = [];
+  private historicalCpuLimit: number[] = [];
 
   constructor(
     private utilizationService: UtilizationService,
@@ -25,54 +25,109 @@ export class ProjectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.clearCharts();
     this.route.params.subscribe(routes => {
       this.namespace = routes.namespace;
       this.utilizationService.getUtilizations(this.namespace).then(response => {
         console.log(response);
         this.generateMemoryAndCpuArrays(response);
-
-        let _memLineChartData:Array<any> = new Array();
-        _memLineChartData = [
-          {
-            data: this.historicalMemUsed,
-            label: 'Memory Used'
-          },
-          {
-            data: this.historicalMemLimit,
-            label: 'Memory Limit'
-          }
-        ];
-
-        let _cpuLineChartData:Array<any> = new Array();
-        _cpuLineChartData = [
-          {
-            data: this.historicalCpuUsed,
-            label: 'CPU Used'
-          },
-          {
-            data: this.historicalCpuLimit,
-            label: 'CPU Limit'
-          }
-        ];
-
-        this.memLineChartData = _memLineChartData;
-        this.cpuLineChartData = _cpuLineChartData;
+        this.updateCharts();
       });
     });
   }
 
   private generateMemoryAndCpuArrays(utilizations: Utilization[]): void {
     for(let utilization of utilizations) {
+
+      // Lower the date resolution to the minute level to consider messages
+      // as simultaneous
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
 
-      this.historicalMemUsed.push(utilization.memUsed);
-      this.historicalMemLimit.push(utilization.memLimit.substring(0, utilization.memLimit.length-2));
-      this.historicalCpuUsed.push(utilization.cpuUsed);
-      this.historicalCpuLimit.push(utilization.cpuLimit);
+      // Format memory used into gigabytes, handle 0 case
+      let memUsed: number = utilization.memUsed.length > 2 ?
+        +utilization.memUsed.substring(0, utilization.memUsed.length-2) :
+        +utilization.memUsed;
+      let memUsedUnit: string = utilization.memUsed.length > 2 ?
+        utilization.memUsed.substring(utilization.memUsed.length-2, utilization.memUsed.length) :
+        'Gi';
+      if(memUsedUnit == 'Mi') memUsed /= 1024;
+
+      let memLimit: number = utilization.memLimit.length > 2 ?
+        +utilization.memLimit.substring(0, utilization.memLimit.length-2) :
+        +utilization.memLimit;
+      let memLimitUnit: string = utilization.memLimit.length > 2 ?
+        utilization.memLimit.substring(utilization.memLimit.length-2, utilization.memLimit.length) :
+        'Gi';
+      if(memLimitUnit == 'Mi') memLimit /= 1024;
+
+      this.historicalMemUsed.push(memUsed);
+      this.historicalMemLimit.push(memLimit);
+      this.historicalCpuUsed.push(+utilization.cpuUsed);
+      this.historicalCpuLimit.push(+utilization.cpuLimit);
 
       this.memLineChartLabels.push(newDate);
       this.cpuLineChartLabels.push(newDate);
     }
+  }
+
+  private updateCharts(): void {
+    let _memLineChartData:Array<any> = new Array();
+    _memLineChartData = [
+      {
+        data: this.historicalMemUsed,
+        label: 'Memory Used'
+      },
+      {
+        data: this.historicalMemLimit,
+        label: 'Memory Limit'
+      }
+    ];
+
+    let _cpuLineChartData:Array<any> = new Array();
+    _cpuLineChartData = [
+      {
+        data: this.historicalCpuUsed,
+        label: 'CPU Used'
+      },
+      {
+        data: this.historicalCpuLimit,
+        label: 'CPU Limit'
+      }
+    ];
+
+    this.memLineChartData = _memLineChartData;
+    this.cpuLineChartData = _cpuLineChartData;
+    this.memLineChartLabels = [];
+    this.cpuLineChartLabels = [];
+  }
+
+  private clearCharts(): void {
+    this.historicalMemUsed = [];
+    this.historicalMemLimit = [];
+    this.historicalCpuUsed = [];
+    this.historicalCpuLimit = [];
+
+    let _memLineChartData:Array<any> = new Array();
+    let _cpuLineChartData:Array<any> = new Array();
+
+    _memLineChartData = [{
+      data: this.historicalMemUsed,
+      label: 'Memory Used'
+    }, {
+      data: this.historicalMemLimit,
+      label: 'Memory Limit'
+    }];
+
+    _cpuLineChartData = [{
+      data: this.historicalCpuUsed,
+      label: 'CPU Used'
+    }, {
+      data: this.historicalCpuLimit,
+      label: 'CPU Limit'
+    }];
+
+    this.memLineChartData = _memLineChartData;
+    this.cpuLineChartData = _cpuLineChartData;
   }
 
   // memLineChart

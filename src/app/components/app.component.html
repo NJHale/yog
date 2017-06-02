@@ -10,6 +10,7 @@
 
 <!-- Container for sidenav -->
 <md-sidenav-container>
+
   <!-- Toolbar inside sidenav when screen is narrow -->
   <md-toolbar *ngIf="isNarrow" class="tool-time" color="primary">
     <button md-icon-button (click)="sidenav.toggle()">
@@ -32,33 +33,31 @@
         </i>
       </div>
     </div>
+
+    <!-- Links added to sidenav -->
     <md-nav-list text = "secondary">
-      <md-list-item (click) = "sidenav.close();">
+
+      <!-- Home button -->
+      <md-list-item>
         <a [routerLink]="['/home']">
           <md-icon class = "navIcon" md-list-avatar>home</md-icon>
           <span font = "roboto">HOME</span>
         </a>
       </md-list-item>
+
+      <!-- Links to each namespace -->
       <md-list-item *ngFor="let namespace of namespaces">
         <a [routerLink]="['/project', namespace]">
           <md-icon class = "navIcon" md-list-avatar>label</md-icon>
           <span font = "roboto">{{namespace}}</span>
         </a>
       </md-list-item>
-      <!-- <md-list-item (click) = "sidenav.close(); goToPage2()">
-        <md-icon class = "navIcon" md-list-avatar>markunread_mailbox</md-icon>
-        <span font = "roboto">PAGE2</span>
-      </md-list-item>
-      <md-list-item (click) = "sidenav.close(); goToPage3()">
-        <md-icon class = "navIcon" md-list-avatar>mail</md-icon>
-        <span font = "roboto">PAGE3</span>
-      </md-list-item> -->
     </md-nav-list>
   </md-sidenav>
 
   <!-- gotta have routing -->
   <router-outlet></router-outlet>
 
-  <!-- some spave at the bottom would look nice -->
+  <!-- some space at the bottom would look nice -->
   <div style="height:20px;"></div>
 </md-sidenav-container>
