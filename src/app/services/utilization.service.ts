@@ -39,6 +39,51 @@ export class UtilizationService {
                .catch(this.handleError);
   }
 
+  absoluteMemoryInGb(memStr: string): number {
+    let mem: number = memStr.length > 2 ?
+      +memStr.substring(0, memStr.length-2) :
+      +memStr;
+
+    let memUnit: string = memStr.length > 2 ?
+      memStr.substring(memStr.length-2, memStr.length) :
+      'Gi';
+
+    if(memUnit == 'Mi') mem /=1024;
+
+    return mem;
+  }
+
+  generateMemChartData(memUsed: number[], memLimit: number[]): Array<any> {
+    let _memLineChartData:Array<any> = new Array();
+    _memLineChartData = [
+      {
+        data: memUsed,
+        label: 'Memory Used'
+      },
+      {
+        data: memLimit,
+        label: 'Memory Limit'
+      }
+    ];
+    return _memLineChartData;
+  }
+
+  generateCpuChartData(cpuUsed: number[], cpuLimit: number[]): Array<any> {
+    let _cpuLineChartData:Array<any> = new Array();
+    _cpuLineChartData = [
+      {
+        data: cpuUsed,
+        label: 'CPU Used'
+      },
+      {
+        data: cpuLimit,
+        label: 'CPU Limit'
+      }
+    ];
+    return _cpuLineChartData;
+  }
+
+
   private extractNamespaces(res: Response) {
     let body = res.json();
     return body.namespaces || { };

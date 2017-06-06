@@ -44,21 +44,10 @@ export class ProjectComponent implements OnInit {
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
 
       // Format memory used into gigabytes, handle 0 case
-      let memUsed: number = utilization.memUsed.length > 2 ?
-        +utilization.memUsed.substring(0, utilization.memUsed.length-2) :
-        +utilization.memUsed;
-      let memUsedUnit: string = utilization.memUsed.length > 2 ?
-        utilization.memUsed.substring(utilization.memUsed.length-2, utilization.memUsed.length) :
-        'Gi';
-      if(memUsedUnit == 'Mi') memUsed /= 1024;
-
-      let memLimit: number = utilization.memLimit.length > 2 ?
-        +utilization.memLimit.substring(0, utilization.memLimit.length-2) :
-        +utilization.memLimit;
-      let memLimitUnit: string = utilization.memLimit.length > 2 ?
-        utilization.memLimit.substring(utilization.memLimit.length-2, utilization.memLimit.length) :
-        'Gi';
-      if(memLimitUnit == 'Mi') memLimit /= 1024;
+      let memUsed: number =
+        this.utilizationService.absoluteMemoryInGb(utilization.memUsed);
+      let memLimit: number =
+        this.utilizationService.absoluteMemoryInGb(utilization.memLimit);
 
       this.historicalMemUsed.push(memUsed);
       this.historicalMemLimit.push(memLimit);
@@ -71,32 +60,12 @@ export class ProjectComponent implements OnInit {
   }
 
   private updateCharts(): void {
-    let _memLineChartData:Array<any> = new Array();
-    _memLineChartData = [
-      {
-        data: this.historicalMemUsed,
-        label: 'Memory Used'
-      },
-      {
-        data: this.historicalMemLimit,
-        label: 'Memory Limit'
-      }
-    ];
-
-    let _cpuLineChartData:Array<any> = new Array();
-    _cpuLineChartData = [
-      {
-        data: this.historicalCpuUsed,
-        label: 'CPU Used'
-      },
-      {
-        data: this.historicalCpuLimit,
-        label: 'CPU Limit'
-      }
-    ];
-
-    this.memLineChartData = _memLineChartData;
-    this.cpuLineChartData = _cpuLineChartData;
+    this.memLineChartData = this.utilizationService.generateMemChartData(
+      this.historicalMemUsed, this.historicalMemLimit
+    );
+    this.cpuLineChartData = this.utilizationService.generateCpuChartData(
+      this.historicalCpuUsed, this.historicalCpuLimit
+    );
     this.memLineChartLabels = [];
     this.cpuLineChartLabels = [];
   }

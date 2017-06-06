@@ -11,8 +11,6 @@ import { UtilizationService } from '../../services/utilization.service';
 })
 export class HomeComponent implements OnInit {
 
-  private readonly SKIP_FREQ = 0;
-
   private historicalTotalMemUsed: number[] = [];
   private historicalTotalMemLimit: number[] = [];
   private historicalTotalCpuUsed: number[] = [];
@@ -28,34 +26,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.utilizationService.getUtilizations().then(response => {
       this.generateMemoryAndCpuArrays(response);
-
-      let _memLineChartData:Array<any> = new Array();
-      _memLineChartData = [
-        {
-          data: this.historicalTotalMemUsed,
-          label: 'Memory Used'
-        },
-        {
-          data: this.historicalTotalMemLimit,
-          label: 'Memory Limit'
-        }
-      ];
-
-      let _cpuLineChartData:Array<any> = new Array();
-      _cpuLineChartData = [
-        {
-          data: this.historicalTotalCpuUsed,
-          label: 'CPU Used'
-        },
-        {
-          data: this.historicalTotalCpuLimit,
-          label: 'CPU Limit'
-        }
-      ];
-
-      this.memLineChartData = _memLineChartData;
-      this.cpuLineChartData = _cpuLineChartData;
-
+      this.updateCharts();
     });
 
     this.utilizationService.getNodeCapacities().then(response => {
@@ -71,36 +42,50 @@ export class HomeComponent implements OnInit {
     let cpuUsedTotal: number = 0;
     let cpuLimitTotal: number = 0;
 
-    let skip: number = 0;
-
     for(let utilization of utilizations) {
+      // Lower the date resolution to the minute level to consider messages
+      // as simultaneous
       let newDate: string = utilization.date.substring(0,utilization.date.length-5);
+
       if(currentDate != newDate) {
-        if(skip == 0) {
-          this.memLineChartLabels.push(newDate);
-          this.cpuLineChartLabels.push(newDate);
-          currentDate = newDate;
-          this.historicalTotalMemUsed.push(memUsedTotal);
-          memUsedTotal = 0;
-          this.historicalTotalMemLimit.push(memLimitTotal);
-          memLimitTotal = 0;
-          this.historicalTotalCpuUsed.push(cpuUsedTotal);
-          cpuUsedTotal = 0;
-          this.historicalTotalCpuLimit.push(cpuLimitTotal);
-          cpuLimitTotal = 0;
-        }
+        this.memLineChartLabels.push(newDate);
+        this.cpuLineChartLabels.push(newDate);
+
+        currentDate = newDate;
+
+        this.historicalTotalMemUsed.push(memUsedTotal);
+        this.historicalTotalMemLimit.push(memLimitTotal);
+        this.historicalTotalCpuUsed.push(cpuUsedTotal);
+        this.historicalTotalCpuLimit.push(cpuLimitTotal);
+
+        memUsedTotal = 0;
+        memLimitTotal = 0;
+        cpuUsedTotal = 0;
+        cpuLimitTotal = 0;
       } else {
-        memUsedTotal += parseInt(utilization.memUsed);
-        memLimitTotal += parseInt(utilization.memLimit);
-        cpuUsedTotal += parseInt(utilization.cpuUsed);
-        cpuLimitTotal += parseInt(utilization.cpuLimit);
+        let memUsed: number =
+          this.utilizationService.absoluteMemoryInGb(utilization.memUsed);
+        let memLimit: number =
+          this.utilizationService.absoluteMemoryInGb(utilization.memLimit);
+
+        memUsedTotal += memUsed;
+        memLimitTotal += memLimit;
+        cpuUsedTotal += +utilization.cpuUsed;
+        cpuLimitTotal += +utilization.cpuLimit;
       }
-      skip++;
-      if(skip > this.SKIP_FREQ) skip = 0;
     }
   }
 
-
+  private updateCharts(): void {
+    this.memLineChartData = this.utilizationService.generateMemChartData(
+      this.historicalTotalMemUsed, this.historicalTotalMemLimit
+    );
+    this.cpuLineChartData = this.utilizationService.generateCpuChartData(
+      this.historicalTotalCpuUsed, this.historicalTotalCpuLimit
+    );
+    this.memLineChartLabels = [];
+    this.cpuLineChartLabels = [];
+  }
 
   // memLineChart
   public memLineChartData:Array<any> = [
