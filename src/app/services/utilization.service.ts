@@ -86,14 +86,16 @@ export class UtilizationService {
 
   generateMemPercentChartData(memUsed: number[], memTotal: number): Array<any> {
     if(memTotal == 0) return [{data: [], label: 'Memory Used (%)'}];
+    let memUsedPercent = [];
     for(let mem of memUsed) {
-      mem /= memTotal;
-      mem *= 100;
+      let newMem = mem/memTotal;
+      newMem *= 100;
+      memUsedPercent.push(newMem);
     }
     let _memPercentLineChartData:Array<any> = new Array();
     _memPercentLineChartData = [
       {
-        data: memUsed,
+        data: memUsedPercent,
         label: 'Memory Used (%)'
       }
     ];
@@ -102,14 +104,16 @@ export class UtilizationService {
 
   generateCpuPercentChartData(cpuUsed: number[], cpuTotal: number): Array<any> {
     if(cpuTotal == 0) return [{data: [], label: 'CPU Used (%)'}];
+    let cpuUsedPercent = [];
     for(let cpu of cpuUsed) {
-      cpu /= cpuTotal;
-      cpu *= 100;
+      let newCpu = cpu/cpuTotal;
+      newCpu *= 100;
+      cpuUsedPercent.push(newCpu);
     }
     let _cpuPercentLineChartData: Array<any> = new Array();
     _cpuPercentLineChartData = [
       {
-        data: cpuUsed,
+        data: cpuUsedPercent,
         label: 'CPU Used (%)'
       }
     ];

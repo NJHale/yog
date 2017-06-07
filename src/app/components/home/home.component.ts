@@ -30,13 +30,20 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.utilizationService.getNodeCapacities().then(response => {
       for(let obj of response) {
-        if(obj.memory.length > 2) {
-          if(obj.memory.substring(obj.memory.length-2,obj.memory.length) == 'Ki') {
-            this.totalMem += (+obj.memory.substring(obj.memory.length, obj.memory.length-2))/1048576;
+
+        let mem = obj.memory;
+        let cpu = obj.cpu;
+
+        if(mem.length > 2) {
+          if(mem.substring(mem.length-2, mem.length) == 'Ki') {
+            this.totalMem += (+mem.substring(0, mem.length-2)) / 1048576;
           }
         }
+
+        this.totalCpu += +cpu;
       }
-      console.log(this.totalMem);
+      console.log("Total available memory on cluster: " + this.totalMem);
+      console.log("Total available CPU cores on cluster: " + this.totalCpu);
     });
 
     this.utilizationService.getUtilizations().then(response => {
