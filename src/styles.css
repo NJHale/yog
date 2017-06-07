@@ -55,19 +55,19 @@ body{
 
 [card-column-1] {
   width: 100%;
-  max-width: 1060px;
+  max-width: 1150px;
 }
 [card-column-2] {
   width: 100%;
-  max-width: 530px;
+  max-width: 575px;
 }
 [card-column-3] {
   width: 100%;
-  max-width: 353px;
+  max-width: 383px;
 }
 [card-column-4] {
   width: 100%;
-  max-width: 265px;
+  max-width: 287px;
 }
 
 [font="roboto"] {

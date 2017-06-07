@@ -16,6 +16,10 @@ export class HomeComponent implements OnInit {
   private historicalTotalCpuUsed: number[] = [];
   private historicalTotalCpuLimit: number[] = [];
 
+  private totalMem = 0;
+  private totalCpu = 0;
+  private totalPods = 0;
+
   constructor(
     private utilizationService: UtilizationService
   ) { }
@@ -24,13 +28,20 @@ export class HomeComponent implements OnInit {
    * determine page layout onInit
    */
   ngOnInit(): void {
+    this.utilizationService.getNodeCapacities().then(response => {
+      for(let obj of response) {
+        if(obj.memory.length > 2) {
+          if(obj.memory.substring(obj.memory.length-2,obj.memory.length) == 'Ki') {
+            this.totalMem += (+obj.memory.substring(obj.memory.length, obj.memory.length-2))/1048576;
+          }
+        }
+      }
+      console.log(this.totalMem);
+    });
+
     this.utilizationService.getUtilizations().then(response => {
       this.generateMemoryAndCpuArrays(response);
       this.updateCharts();
-    });
-
-    this.utilizationService.getNodeCapacities().then(response => {
-      console.log(response);
     });
   }
 
@@ -44,12 +55,14 @@ export class HomeComponent implements OnInit {
 
     for(let utilization of utilizations) {
       // Lower the date resolution to the minute level to consider messages
-      // as simultaneous
-      let newDate: string = utilization.date.substring(0,utilization.date.length-5);
+      // as simultaneous. Also remove the year for space reasons
+      let newDate: string = utilization.date.substring(5,utilization.date.length-5);
 
       if(currentDate != newDate) {
         this.memLineChartLabels.push(newDate);
         this.cpuLineChartLabels.push(newDate);
+        this.memPercentLineChartLabels.push(newDate);
+        this.cpuPercentLineChartLabels.push(newDate);
 
         currentDate = newDate;
 
@@ -83,23 +96,43 @@ export class HomeComponent implements OnInit {
     this.cpuLineChartData = this.utilizationService.generateCpuChartData(
       this.historicalTotalCpuUsed, this.historicalTotalCpuLimit
     );
+    this.memPercentLineChartData = this.utilizationService.generateMemPercentChartData(
+      this.historicalTotalMemUsed, this.totalMem
+    );
+    this.cpuPercentLineChartData = this.utilizationService.generateCpuPercentChartData(
+      this.historicalTotalCpuUsed, this.totalCpu
+    );
     this.memLineChartLabels = [];
     this.cpuLineChartLabels = [];
+    this.memPercentLineChartLabels = [];
+    this.cpuPercentLineChartLabels = [];
   }
 
   // memLineChart
   public memLineChartData:Array<any> = [
-    {data: [], label: 'Memory Used'},
-    {data: [], label: 'Memory Limit'}
+    {data: [], label: 'Memory Used (GB)'},
+    {data: [], label: 'Memory Limit (GB)'}
   ];
   memLineChartLabels:Array<any> = [];
 
   // cpuLineChart
   public cpuLineChartData:Array<any> = [
-    {data: [], label: 'CPU Used'},
-    {data: [], label: 'CPU Limit'}
+    {data: [], label: 'CPU Used (GB)'},
+    {data: [], label: 'CPU Limit (GB)'}
   ];
   cpuLineChartLabels:Array<any> = [];
+
+  // memPercentLineChart
+  public memPercentLineChartData:Array<any> = [
+    {data: [], label: 'Memory Used (%)'}
+  ];
+  memPercentLineChartLabels:Array<any> = [];
+
+  // cpuPercentLineChart
+  public cpuPercentLineChartData:Array<any> = [
+    {data: [], label: 'CPU Used (%)'}
+  ];
+  cpuPercentLineChartLabels:Array<any> = [];
 
   // lineChart
   public lineChartOptions:any = {

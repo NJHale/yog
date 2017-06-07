@@ -29,7 +29,6 @@ export class ProjectComponent implements OnInit {
     this.route.params.subscribe(routes => {
       this.namespace = routes.namespace;
       this.utilizationService.getUtilizations(this.namespace).then(response => {
-        console.log(response);
         this.generateMemoryAndCpuArrays(response);
         this.updateCharts();
       });

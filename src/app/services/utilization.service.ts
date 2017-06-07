@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
 import { Utilization } from '../models/utilization';
+import { Node } from '../models/node'
 
 @Injectable()
 export class UtilizationService {
@@ -32,10 +33,10 @@ export class UtilizationService {
                .catch(this.handleError);
   }
 
-  getNodeCapacities(): Promise<string[]> {
+  getNodeCapacities(): Promise<Node[]> {
     return this.http.get('/api/nodes')
                .toPromise()
-               .then(response => response.json() as string[])
+               .then(response => response.json() as Node[])
                .catch(this.handleError);
   }
 
@@ -58,11 +59,11 @@ export class UtilizationService {
     _memLineChartData = [
       {
         data: memUsed,
-        label: 'Memory Used'
+        label: 'Memory Used (GB)'
       },
       {
         data: memLimit,
-        label: 'Memory Limit'
+        label: 'Memory Limit (GB)'
       }
     ];
     return _memLineChartData;
@@ -73,14 +74,46 @@ export class UtilizationService {
     _cpuLineChartData = [
       {
         data: cpuUsed,
-        label: 'CPU Used'
+        label: 'CPU Used (GB)'
       },
       {
         data: cpuLimit,
-        label: 'CPU Limit'
+        label: 'CPU Limit (GB)'
       }
     ];
     return _cpuLineChartData;
+  }
+
+  generateMemPercentChartData(memUsed: number[], memTotal: number): Array<any> {
+    if(memTotal == 0) return [{data: [], label: 'Memory Used (%)'}];
+    for(let mem of memUsed) {
+      mem /= memTotal;
+      mem *= 100;
+    }
+    let _memPercentLineChartData:Array<any> = new Array();
+    _memPercentLineChartData = [
+      {
+        data: memUsed,
+        label: 'Memory Used (%)'
+      }
+    ];
+    return _memPercentLineChartData;
+  }
+
+  generateCpuPercentChartData(cpuUsed: number[], cpuTotal: number): Array<any> {
+    if(cpuTotal == 0) return [{data: [], label: 'CPU Used (%)'}];
+    for(let cpu of cpuUsed) {
+      cpu /= cpuTotal;
+      cpu *= 100;
+    }
+    let _cpuPercentLineChartData: Array<any> = new Array();
+    _cpuPercentLineChartData = [
+      {
+        data: cpuUsed,
+        label: 'CPU Used (%)'
+      }
+    ];
+    return _cpuPercentLineChartData;
   }
 
 

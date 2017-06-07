@@ -1,5 +1,5 @@
 
-
+<!-- First row -->
 <div app-align-content layout="row" layout-align="center start" layout-wrap>
 
   <!-- First column -->
@@ -24,6 +24,41 @@
         <canvas baseChart
                 [datasets]="cpuLineChartData"
                 [labels]="cpuLineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [chartType]="lineChartType">
+        </canvas>
+      </div>
+    </md-card>
+  </div>
+</div>
+
+
+<!-- Second row -->
+<div app-align-content layout="row" layout-align="center start" layout-wrap>
+
+  <!-- First column -->
+  <div card-column-2 layout="column">
+    <md-card card-spacing>
+      <div style="display: block;">
+        <canvas baseChart
+                [datasets]="memPercentLineChartData"
+                [labels]="memPercentLineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [chartType]="lineChartType">
+        </canvas>
+      </div>
+    </md-card>
+  </div>
+
+  <!-- Second column -->
+  <div card-column-2 layout="column">
+    <md-card card-spacing>
+      <div style="display: block;">
+        <canvas baseChart
+                [datasets]="cpuPercentLineChartData"
+                [labels]="cpuPercentLineChartLabels"
                 [options]="lineChartOptions"
                 [colors]="lineChartColors"
                 [chartType]="lineChartType">
