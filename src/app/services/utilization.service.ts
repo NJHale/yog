@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs';
 
 import { Utilization } from '../models/utilization';
@@ -12,7 +12,15 @@ export class UtilizationService {
 
   getUtilizations(namespace?: string): Promise<Utilization[]> {
     if(!namespace)namespace="";
-    return this.http.get(`/api/utilizations/${namespace}`)
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('start', `${Date.now() - 7 * 24 * 60 * 60 * 1000}`);
+    params.set('end', `${Date.now()}`);
+    let requestOptions = new RequestOptions();
+    requestOptions.params = params;
+
+    requestOptions.params
+    return this.http.get(`/api/utilizations/${namespace}`, requestOptions)
                .toPromise()
                .then(response => response.json() as Utilization[])
                .catch(this.handleError);
@@ -20,7 +28,14 @@ export class UtilizationService {
 
   getLatestUtilizations(namespace?: string): Promise<Utilization[]> {
     if(!namespace)namespace="";
-    return this.http.get(`/api/utilizations/latest/${namespace}`)
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('start', `${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)}`);
+    params.set('end', `${Date.now()}`);
+    let requestOptions = new RequestOptions();
+    requestOptions.params = params;
+
+    return this.http.get(`/api/utilizations/latest/${namespace}`, requestOptions)
                .toPromise()
                .then(response => response.json() as Utilization[])
                .catch(this.handleError);

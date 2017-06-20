@@ -10,7 +10,13 @@ import { UtilizationService } from '../services/utilization.service'
 })
 export class AppComponent implements OnInit {
 
-  private namespaces: string[];
+  public namespaces: string[];
+
+  // Boolean to check if the screen is small enough to be considered "narrow"
+  public isNarrow:boolean;
+
+  // Threshold of narrowness. Tweak if necessary
+  private narrowThreshold:number = 750;
 
   constructor(
     private utilizationService: UtilizationService
@@ -28,17 +34,6 @@ export class AppComponent implements OnInit {
    * @param  {MdSidenav} 'sidenav' The sidenav html element from template
    */
   @ViewChild('sidenav') sidenav: MdSidenav;
-
-  /**
-   * Boolean to check if the screen is small enough to be considered "narrow"
-   * @type {boolean}
-   */
-  private isNarrow:boolean;
-  /**
-   * Threshold of narrowness. Tweak if necessary
-   * @type {number}
-   */
-  private narrowThreshold:number = 750;
 
   /**
    * Function that closes the html md-sidenav

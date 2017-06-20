@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
   private totalCpu = 0;
   private totalPods = 0;
 
+  public isLoading: boolean = false;
+
   constructor(
     private utilizationService: UtilizationService
   ) { }
@@ -28,6 +30,8 @@ export class HomeComponent implements OnInit {
    * determine page layout onInit
    */
   ngOnInit(): void {
+    this.isLoading = true;
+
     this.utilizationService.getNodeCapacities().then(response => {
       for(let obj of response) {
 
@@ -49,6 +53,7 @@ export class HomeComponent implements OnInit {
     this.utilizationService.getUtilizations().then(response => {
       this.generateMemoryAndCpuArrays(response);
       this.updateCharts();
+      this.isLoading = false;
     });
   }
 
@@ -90,8 +95,8 @@ export class HomeComponent implements OnInit {
 
         memUsedTotal += memUsed;
         memLimitTotal += memLimit;
-        cpuUsedTotal += +utilization.cpuUsed;
-        cpuLimitTotal += +utilization.cpuLimit;
+        if(utilization.cpuUsed) cpuUsedTotal += +utilization.cpuUsed;
+        if(utilization.cpuLimit) cpuLimitTotal += +utilization.cpuLimit;
       }
     }
   }

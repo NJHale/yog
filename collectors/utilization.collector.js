@@ -114,7 +114,7 @@ function UtilizationCollector() {
 
       // Retreive the latest utilizations
       var utils = this.getUtilizations(JSON.parse(body));
-      console.log(`utils: ${utils}`);
+      // console.log(`utils: ${utils}`);
 
       // Bulk create new documents for all of the latest Utilizations
       Utilization.create(utils, (err, latestUtils) => {
@@ -142,7 +142,7 @@ function UtilizationCollector() {
   * Generic collection function implementation
   */
   this.collect = (callback) => {
-    console.log('collect() got called!');
+    // console.log('collect() got called!');
     this.collectUtilizations(callback);
   };
 

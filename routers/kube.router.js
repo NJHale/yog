@@ -11,9 +11,7 @@ router.get('/namespaces', (req, res) => {
       'bearer': config.kubeAuthToken
     }
   },(err, resp, body) => {
-    console.log(`error: ${err}`);
-    console.log(`resp: ${JSON.stringify(resp)}`);
-    console.log(`body: ${body}`);
+    if(err) console.log(`error: ${err}`);
 
     var namespaces = JSON.parse(body).items;
     var names = [];
@@ -40,7 +38,6 @@ router.get('/nodes', (req, res) => {
     if(err) console.log(`error: ${err}`);
     else {
       var items = JSON.parse(body).items;
-      console.log(`nodes: ${items}`);
       for(var i = 0; i < items.length; i++) {
         capacities.push(items[i].status.capacity);
         capacities[i].name = items[i].metadata.name;
